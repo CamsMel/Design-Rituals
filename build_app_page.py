@@ -146,10 +146,11 @@ CHAT_SECTION = """
         </div>
 
         <div id="tg-chat-gate" class="tg-tdr__gate" hidden>
-          <p>Sign in with your Thiga account to start. Your notes stay in this
-            session and are never shared with the rest of the tribe.</p>
-          <a class="tg-tdr__btn tg-tdr__btn--primary" href="/auth/login"
-             style="text-decoration:none;display:inline-flex;align-items:center">Sign in with Google</a>
+          <p>You're not signed in. Reload the page and enter the shared Tribe
+            Design password when your browser asks for it. Your notes stay in
+            this session and are never shared with the rest of the tribe.</p>
+          <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
+                  id="tg-chat-gate-reload">Reload</button>
         </div>
 
         <form class="tg-tdr__composer" id="tg-chat-form" hidden>
@@ -311,7 +312,7 @@ CHAT_JS = """
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text })
       });
-      if (res.status === 401) { location.href = '/auth/login'; return; }
+      if (res.status === 401) { location.reload(); return; }
       if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
 
       var reader = res.body.getReader();
@@ -383,18 +384,14 @@ CHAT_JS = """
     }, true);
   });
 
+  var gateReload = document.getElementById('tg-chat-gate-reload');
+  if (gateReload) gateReload.addEventListener('click', function () { location.reload(); });
+
   fetch('/api/config').then(function (r) { return r.json(); }).then(function (cfg) {
     driveEnabled = !!cfg.drive_enabled;
     if (cfg.user) {
       form.hidden = false; gate.hidden = true;
       who.textContent = 'Signed in as ' + cfg.user.name;
-      if (!cfg.auth_disabled) {
-        who.textContent += ' \\u00b7 ';
-        var out = el('a', null, 'sign out');
-        out.href = '/auth/logout';
-        out.style.color = 'inherit';
-        who.appendChild(out);
-      }
     } else {
       form.hidden = true; gate.hidden = false;
     }

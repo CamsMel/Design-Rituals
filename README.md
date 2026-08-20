@@ -4,8 +4,11 @@ La V1 envoyait les consultants copier un prompt dans Claude. La V2 met le chat
 sur la page : ils décrivent leur rituel, Claude les interroge, et le `.pptx`
 arrive dans la fenêtre avec un bouton vers le Drive de la tribe.
 
-Les choix arbitrés avec toi : **Google SSO restreint à @thiga.co**, **hébergement
-Railway**, **dépôt Drive par compte de service** dans un dossier partagé.
+Les choix arbitrés avec toi : **hébergement Railway**, **dépôt Drive par compte
+de service** dans un dossier partagé. Le SSO Google restreint à @thiga.co était
+prévu, mais bloqué faute d'accès Google Cloud pour créer le client OAuth (voir
+l'étape 1) : l'app tourne pour l'instant avec un **mot de passe partagé**, à
+remonter en vrai SSO dès que l'accès arrive.
 
 Compte trois demi-journées si l'IT répond vite. L'étape longue n'est pas le code,
 c'est le compte de service Google.
@@ -18,7 +21,7 @@ c'est le compte de service Google.
 navigateur                    conteneur Railway
 ┌──────────────┐              ┌──────────────────────────────────────┐
 │ index.html   │  POST /api/chat  │ FastAPI                          │
-│ (page V1 +   │ ───────────────▶ │  ├─ auth.py    Google SSO        │
+│ (page V1 +   │ ───────────────▶ │  ├─ auth.py    mot de passe partagé│
 │  chat)       │                  │  ├─ agent.py   Agent SDK         │
 │              │ ◀─ SSE ───────── │  │    └─ claude (binaire embarqué)│
 │              │  text / tool /   │  │         └─ Bash: fill_deck.py │
@@ -76,7 +79,7 @@ envoyer, voir le texte arriver au fil de l'eau, et récupérer le fichier.
 
 ---
 
-## Étape 1 — La clé, puis l'écran OAuth Google
+## Étape 1 — La clé, puis l'accès
 
 ### La clé : proxy GenAI Thiga, pas l'API Anthropic directe
 
@@ -117,31 +120,35 @@ pose une limite de dépense sur le Workspace. Ne réutilise jamais une clé part
 entre projets : elle ne se révoque pas sans casser les autres usages, et la
 dépense n'est plus attribuable.
 
-### L'écran OAuth Google
+### L'écran OAuth Google — bloqué, remplacé par un mot de passe partagé
 
-Dans [console.cloud.google.com](https://console.cloud.google.com), sur le projet
-Thiga (ou un nouveau projet dédié, ça évite de toucher à l'existant) :
+Décision prise le 2026-08-20 : la personne qui a lancé ce déploiement n'avait
+pas les droits pour créer un client OAuth dans Google Cloud Console (pas
+Owner/Editor sur le projet GCP Thiga). Plutôt que de bloquer tout le
+déploiement dessus, `app/auth.py` protège l'app avec un **mot de passe
+partagé** en HTTP Basic Auth — le navigateur affiche sa propre boîte de
+dialogue, pas d'écran à construire.
 
-1. **APIs & Services → OAuth consent screen.** Type **Internal** si le projet est
-   dans l'organisation Thiga : ça supprime la validation Google, qui prend des
-   semaines. Scopes : `openid`, `email`, `profile`. Rien d'autre.
-2. **Credentials → Create credentials → OAuth client ID → Web application.**
-   - Authorized redirect URI : `http://localhost:8000/auth/callback` pour l'instant.
-     La vraie URL n'existe pas encore, on l'ajoutera à l'étape 2.
-   - Note le **Client ID** et le **Client secret**.
+**Le compromis assumé :** un seul secret pour toute la tribu, pas de
+vérification par domaine `@thiga.co`. Le champ "username" de la boîte Basic
+Auth sert de nom affiché sur la cover du deck — demande aux consultants d'y
+taper leur email Thiga, mais rien ne le vérifie (contrairement à un vrai jeton
+Google). Si quelqu'un avec les droits Google Cloud devient disponible, le
+vrai SSO (implémentation encore dans l'historique git, voir le commit qui a
+introduit `APP_PASSWORD`) redonne l'identité vérifiée et la restriction de
+domaine ; seul `app/auth.py` change pour y revenir.
 
 Teste en local avant de déployer :
 
 ```bash
-export GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=...
+export APP_PASSWORD=un-secret-pour-la-demo
 export PUBLIC_BASE_URL=http://localhost:8000
 export SESSION_SECRET=$(openssl rand -hex 32)
-export ALLOWED_EMAIL_DOMAIN=thiga.co
 uvicorn app.main:app --reload
 ```
 
-Le filtre de domaine vérifie deux choses, le champ `hd` du jeton Google **et**
-le suffixe de l'adresse. Le suffixe seul se laisse contourner par un alias.
+Le navigateur demandera un nom d'utilisateur (libre, sert de nom affiché) et
+un mot de passe (doit correspondre exactement à `APP_PASSWORD`).
 
 ---
 
@@ -156,28 +163,33 @@ déploiement. Donc :
 1. push du repo sur GitHub          (repo PRIVÉ)
 2. Railway → New Project → GitHub repo
 3. poser les variables SAUF PUBLIC_BASE_URL
-4. Deploy  → ça démarre, le SSO ne marche pas encore, c'est normal
+4. Deploy  → ça démarre
 5. Settings → Generate Domain  → l'URL apparaît enfin
 6. poser PUBLIC_BASE_URL = cette URL → Railway redéploie tout seul
-7. Google Cloud → ajouter <URL>/auth/callback en redirect URI
-8. ouvrir l'URL et se connecter
+7. ouvrir l'URL, le navigateur demande le mot de passe partagé (APP_PASSWORD)
 ```
 
-Sauter l'étape 7 donne `redirect_uri_mismatch`, et le message d'erreur de Google
-ne dit pas quelle URI manque.
+Pas de piège d'ordonnancement Google ici — le mot de passe partagé ne dépend
+d'aucune URL. Si le vrai SSO revient un jour, l'étape "déclarer l'URL dans
+Google Cloud" refera surface (voir l'étape 1).
 
 ### Le push
 
 ```bash
 cd prep-kit
 git init && git add . && git commit -m "Tribe Design Prep Kit"
-gh repo create thiga/tribe-design-prep-kit --private --source=. --push
+gh repo create thiga-co/tribe-design-prep-kit --private --source=. --push
 ```
 
 Le `.gitignore` du repo exclut déjà `.env` et tout fichier ressemblant à une clé
 de compte de service. **Aucun secret ne va dans le repo**, même privé : ils vivent
 dans les variables Railway. Une clé commitée reste dans l'historique même après
 suppression du fichier, et il faut la révoquer.
+
+Si tu n'as pas encore accès à l'org GitHub `thiga-co` (invitation à demander sur
+Slack **#help-genai-platform**), pousse d'abord sous ton compte perso en privé,
+puis transfère l'ownership vers `thiga-co` une fois l'accès obtenu — ça ne casse
+pas l'historique.
 
 ### Le déploiement
 
@@ -191,9 +203,7 @@ Avant de cliquer Deploy, **Add variables** :
 | `ANTHROPIC_BASE_URL` | `https://models.thiga.co` |
 | `ANTHROPIC_AUTH_TOKEN` | la clé perso de l'étape 1, reçue par Slack |
 | `ANTHROPIC_MODEL` | `claude-sonnet-5` |
-| `GOOGLE_CLIENT_ID` | de l'écran OAuth |
-| `GOOGLE_CLIENT_SECRET` | de l'écran OAuth |
-| `ALLOWED_EMAIL_DOMAIN` | `thiga.co` |
+| `APP_PASSWORD` | le mot de passe partagé pour toute la tribu |
 | `SESSION_SECRET` | `openssl rand -hex 32` |
 | `MAX_TURNS` | `30` |
 | `MAX_BUDGET_USD` | `2.0` |
@@ -327,8 +337,8 @@ identifiants en main.
    `~/.claude/skills/<nom>/`. Dans l'image, le `COPY` du Dockerfile le pose là.
    En local, c'est le `cp -r` de l'étape 0. Le message d'init liste les skills
    chargées : c'est le seul contrôle qui compte.
-2. **`redirect_uri_mismatch`.** L'URI dans Google Cloud doit être exactement
-   `PUBLIC_BASE_URL` + `/auth/callback`, au slash et au `https` près.
+2. **401 partout après déploiement.** `APP_PASSWORD` n'est pas posée (ou vide) :
+   le middleware d'auth refuse tout sauf `/healthz`. Vérifie la variable Railway.
 3. **Le JSON du compte de service tronqué.** Passe-le par `jq -c`.
 4. **Les decks qui disparaissent.** Monte un volume sur `/data`.
 5. **Deux messages envoyés en même temps.** Un verrou par session les met en
@@ -344,7 +354,7 @@ identifiants en main.
 |---|---|
 | `app/main.py` | routes, cookie de session, téléchargement, garde anti-traversée |
 | `app/agent.py` | options du SDK, streaming, verrou par session, garde sur les écritures |
-| `app/auth.py` | Google SSO, filtre de domaine, `AUTH_DISABLED=1` pour le local |
+| `app/auth.py` | mot de passe partagé (Basic Auth), `AUTH_DISABLED=1` pour le local |
 | `app/drive.py` | dépôt par compte de service, désactivé proprement si non configuré |
 | `app/static/index.html` | **généré** par `build_app_page.py` |
 | `skill/` | copie de la skill, embarquée dans l'image |

@@ -25,10 +25,18 @@ de service. Les secrets vivent dans les variables Railway. Une clé commitée re
 dans l'historique : si ça arrive, il faut la révoquer, pas juste supprimer le
 fichier.
 
-**`app/static/index.html` est généré**, jamais édité à la main. Il sort de
-`build_app_page.py`, qui charge le générateur de la V1 (`../front/build_page.py`)
-et y injecte le chat. Éditer le HTML directement fait perdre la modification au
-prochain build.
+**`app/static/index.html` est généré**, jamais édité à la main — en théorie.
+Découverte le 2026-08-20 : `build_app_page.py` pointe vers
+`/home/claude/work/front/build_page.py`, un chemin qui n'existe que dans le
+conteneur d'origine où ce code a été écrit. Ce fichier n'est ni dans ce repo ni
+ailleurs sur les machines où ce projet a été repris depuis : **le pipeline de
+build est cassé**, `python build_app_page.py` échoue avec `FileNotFoundError`.
+En attendant de retrouver la source de la V1 (ou de la reconstruire), tout
+changement de `app/static/index.html` se fait donc à la main, en miroir exact
+des templates `CHAT_SECTION`/`SCRIPT` de `build_app_page.py` pour ne pas les
+faire diverger. Le jour où la V1 est retrouvée : corriger le chemin `V1 =` dans
+`build_app_page.py`, régénérer, et vérifier par diff que les deux fichiers
+racontent la même chose.
 
 **Le texte de l'interface est en anglais, les decks aussi.** Les conversations
 avec les consultants suivent leur langue, français en pratique. Pour toute prose
@@ -84,12 +92,30 @@ l'utilisateur, pas une clé Anthropic Workspace dédiée. Trois variables :
 (budget personnel partagé par une app de prod, `MAX_BUDGET_USD` non garanti avec
 un alias de modèle côté proxy) dans le README, étape 1.
 
+## L'auth : mot de passe partagé, pas de SSO Google (pour l'instant)
+
+Décision prise le 2026-08-20, à ne pas redécouvrir : l'utilisateur n'avait pas
+les droits Google Cloud pour créer un client OAuth (pas Owner/Editor sur le
+projet GCP Thiga). Plutôt que de bloquer tout le déploiement, `app/auth.py` a
+été réécrit en HTTP Basic Auth avec un seul secret partagé (`APP_PASSWORD`),
+appliqué à tout via un middleware dans `app/main.py` (sauf `/healthz`). Le nom
+tapé dans le champ "username" de la boîte Basic Auth devient le nom affiché sur
+la cover du deck — non vérifié, contrairement à un vrai jeton Google.
+
+Le vrai SSO (Google, filtre de domaine `@thiga.co`) reste l'objectif : dès que
+quelqu'un avec les droits Google Cloud est disponible, revoir `app/auth.py`
+(l'ancienne implémentation OAuth est dans l'historique git) plutôt que de
+repartir de zéro. `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`/
+`ALLOWED_EMAIL_DOMAIN` ne sont plus utilisées nulle part dans le code actuel —
+ne pas les redécouvrir comme un bug si elles apparaissent dans un vieux commit.
+
 ## Ce que tu ne peux pas faire à ma place
 
 Deux choses demandent un humain dans un navigateur. Ne tourne pas en rond
 dessus, demande-les :
 
-1. Le client OAuth Google (Client ID et secret), dans la console Google Cloud.
+1. Le client OAuth Google (Client ID et secret), dans la console Google Cloud
+   — pour l'instant contourné par le mot de passe partagé, voir ci-dessus.
 2. Le compte de service Drive, qui demande l'accord de l'IT Thiga.
 
 Tout le reste du `README.md` est automatisable : le repo GitHub, le déploiement,

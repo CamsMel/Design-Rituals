@@ -8,7 +8,7 @@ import pathlib
 import uuid
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
@@ -28,6 +28,21 @@ app.add_middleware(
 app.include_router(auth.router)
 
 
+@app.middleware("http")
+async def require_auth(request: Request, call_next):
+    """Mot de passe partagé sur tout sauf /healthz (Railway doit pouvoir
+    l'appeler sans credentials). Gate aussi la page statique elle-même,
+    montée en ASGI brut plus bas, donc pas atteignable par une dépendance
+    de route classique."""
+    if request.url.path == "/healthz":
+        return await call_next(request)
+    try:
+        auth.current_user(request)
+    except HTTPException as exc:
+        return Response(status_code=exc.status_code, headers=exc.headers)
+    return await call_next(request)
+
+
 def _session_id(request: Request) -> str:
     """Un dossier de travail par onglet, stable tant que le cookie vit."""
     sid = request.session.get("workspace")
@@ -42,7 +57,7 @@ async def config(request: Request):
     return {
         "drive_enabled": drive.enabled(),
         "auth_disabled": auth.AUTH_DISABLED,
-        "user": request.session.get("user") or (auth.DEV_USER if auth.AUTH_DISABLED else None),
+        "user": auth.current_user(request),
     }
 
 

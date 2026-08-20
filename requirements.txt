@@ -2,7 +2,6 @@ fastapi==0.115.6
 uvicorn[standard]==0.34.0
 claude-agent-sdk==0.1.73
 python-pptx==1.0.2
-authlib==1.4.0
 itsdangerous==2.2.0
 httpx==0.28.1
 google-api-python-client==2.157.0
