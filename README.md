@@ -120,35 +120,30 @@ pose une limite de dépense sur le Workspace. Ne réutilise jamais une clé part
 entre projets : elle ne se révoque pas sans casser les autres usages, et la
 dépense n'est plus attribuable.
 
-### L'écran OAuth Google — bloqué, remplacé par un mot de passe partagé
+### L'écran OAuth Google — bloqué, et l'app tourne sans authentification
 
-Décision prise le 2026-08-20 : la personne qui a lancé ce déploiement n'avait
-pas les droits pour créer un client OAuth dans Google Cloud Console (pas
-Owner/Editor sur le projet GCP Thiga). Plutôt que de bloquer tout le
-déploiement dessus, `app/auth.py` protège l'app avec un **mot de passe
-partagé** en HTTP Basic Auth — le navigateur affiche sa propre boîte de
-dialogue, pas d'écran à construire.
+Décision prise le 2026-08-20, révisée le même jour : la personne qui a lancé
+ce déploiement n'avait pas les droits pour créer un client OAuth dans Google
+Cloud Console (pas Owner/Editor sur le projet GCP Thiga). Un mot de passe
+partagé (HTTP Basic Auth) a d'abord remplacé le SSO, puis a été retiré à son
+tour — assez de friction pour préférer ouvrir l'app à tout le monde plutôt que
+de la garder derrière un secret. `app/auth.py` ne fait donc plus rien.
 
-**Le compromis assumé :** un seul secret pour toute la tribu, pas de
-vérification par domaine `@thiga.co`. Le champ "username" de la boîte Basic
-Auth sert de nom affiché sur la cover du deck — demande aux consultants d'y
-taper leur email Thiga, mais rien ne le vérifie (contrairement à un vrai jeton
-Google). Si quelqu'un avec les droits Google Cloud devient disponible, le
-vrai SSO (implémentation encore dans l'historique git, voir le commit qui a
-introduit `APP_PASSWORD`) redonne l'identité vérifiée et la restriction de
-domaine ; seul `app/auth.py` change pour y revenir.
+**Le compromis assumé, explicitement :** l'app est publique. Les briefs de
+mission collés dans le chat sont accessibles à quiconque a l'URL. Comme il n'y
+a plus aucune source d'identité, Claude demande lui-même le nom du consultant
+en début de conversation (voir `agent.py`) plutôt que de le lire d'une
+session. Si une vraie protection redevient nécessaire — le SSO Google
+(implémentation encore dans l'historique git) reste le point de départ le
+plus proche ; seul `app/auth.py` change pour y revenir.
 
 Teste en local avant de déployer :
 
 ```bash
-export APP_PASSWORD=un-secret-pour-la-demo
 export PUBLIC_BASE_URL=http://localhost:8000
 export SESSION_SECRET=$(openssl rand -hex 32)
 uvicorn app.main:app --reload
 ```
-
-Le navigateur demandera un nom d'utilisateur (libre, sert de nom affiché) et
-un mot de passe (doit correspondre exactement à `APP_PASSWORD`).
 
 ---
 
@@ -166,12 +161,11 @@ déploiement. Donc :
 4. Deploy  → ça démarre
 5. Settings → Generate Domain  → l'URL apparaît enfin
 6. poser PUBLIC_BASE_URL = cette URL → Railway redéploie tout seul
-7. ouvrir l'URL, le navigateur demande le mot de passe partagé (APP_PASSWORD)
+7. ouvrir l'URL — accès direct, sans mot de passe
 ```
 
-Pas de piège d'ordonnancement Google ici — le mot de passe partagé ne dépend
-d'aucune URL. Si le vrai SSO revient un jour, l'étape "déclarer l'URL dans
-Google Cloud" refera surface (voir l'étape 1).
+Pas de piège d'ordonnancement Google ici. Si le vrai SSO revient un jour,
+l'étape "déclarer l'URL dans Google Cloud" refera surface (voir l'étape 1).
 
 ### Le push
 
@@ -203,7 +197,6 @@ Avant de cliquer Deploy, **Add variables** :
 | `ANTHROPIC_BASE_URL` | `https://models.thiga.co` |
 | `ANTHROPIC_AUTH_TOKEN` | la clé perso de l'étape 1, reçue par Slack |
 | `ANTHROPIC_MODEL` | `claude-sonnet-5` |
-| `APP_PASSWORD` | le mot de passe partagé pour toute la tribu |
 | `SESSION_SECRET` | `openssl rand -hex 32` |
 | `MAX_TURNS` | `30` |
 | `MAX_BUDGET_USD` | `2.0` |
@@ -337,13 +330,11 @@ identifiants en main.
    `~/.claude/skills/<nom>/`. Dans l'image, le `COPY` du Dockerfile le pose là.
    En local, c'est le `cp -r` de l'étape 0. Le message d'init liste les skills
    chargées : c'est le seul contrôle qui compte.
-2. **401 partout après déploiement.** `APP_PASSWORD` n'est pas posée (ou vide) :
-   le middleware d'auth refuse tout sauf `/healthz`. Vérifie la variable Railway.
-3. **Le JSON du compte de service tronqué.** Passe-le par `jq -c`.
-4. **Les decks qui disparaissent.** Monte un volume sur `/data`.
-5. **Deux messages envoyés en même temps.** Un verrou par session les met en
+2. **Le JSON du compte de service tronqué.** Passe-le par `jq -c`.
+3. **Les decks qui disparaissent.** Monte un volume sur `/data`.
+4. **Deux messages envoyés en même temps.** Un verrou par session les met en
    file plutôt que de laisser deux tours écrire dans le même transcript.
-6. **Le SSE coupé par un proxy.** L'en-tête `X-Accel-Buffering: no` est déjà
+5. **Le SSE coupé par un proxy.** L'en-tête `X-Accel-Buffering: no` est déjà
    posé ; si tu passes derrière un autre reverse proxy, désactive son buffering.
 
 ---
@@ -354,7 +345,7 @@ identifiants en main.
 |---|---|
 | `app/main.py` | routes, cookie de session, téléchargement, garde anti-traversée |
 | `app/agent.py` | options du SDK, streaming, verrou par session, garde sur les écritures |
-| `app/auth.py` | mot de passe partagé (Basic Auth), `AUTH_DISABLED=1` pour le local |
+| `app/auth.py` | aucune auth ; identité recueillie par Claude dans la conversation |
 | `app/drive.py` | dépôt par compte de service, désactivé proprement si non configuré |
 | `app/static/index.html` | **généré** par `build_app_page.py` |
 | `skill/` | copie de la skill, embarquée dans l'image |

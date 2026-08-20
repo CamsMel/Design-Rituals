@@ -8,7 +8,7 @@ import pathlib
 import uuid
 
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse, Response, StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
@@ -27,22 +27,6 @@ app.add_middleware(
     https_only=os.environ.get("PUBLIC_BASE_URL", "").startswith("https://"),
     max_age=60 * 60 * 12,
 )
-app.include_router(auth.router)
-
-
-@app.middleware("http")
-async def require_auth(request: Request, call_next):
-    """Mot de passe partagé sur tout sauf /healthz (Railway doit pouvoir
-    l'appeler sans credentials). Gate aussi la page statique elle-même,
-    montée en ASGI brut plus bas, donc pas atteignable par une dépendance
-    de route classique."""
-    if request.url.path == "/healthz":
-        return await call_next(request)
-    try:
-        auth.current_user(request)
-    except HTTPException as exc:
-        return Response(status_code=exc.status_code, headers=exc.headers)
-    return await call_next(request)
 
 
 def _session_id(request: Request) -> str:
@@ -58,14 +42,12 @@ def _session_id(request: Request) -> str:
 async def config(request: Request):
     return {
         "drive_enabled": drive.enabled(),
-        "auth_disabled": auth.AUTH_DISABLED,
         "user": auth.current_user(request),
     }
 
 
 @app.post("/api/chat")
 async def chat(request: Request):
-    user = auth.current_user(request)
     body = await request.json()
     message = (body.get("message") or "").strip()
     if not message:
@@ -78,9 +60,7 @@ async def chat(request: Request):
         # Le SDK renvoie son propre id de session : on le garde pour reprendre
         # la conversation au tour suivant. On ne peut pas écrire dans le cookie
         # pendant un streaming, donc le client nous le renvoie.
-        async for event in agent.run_turn(
-            sid, user["name"], user["email"], message, resume
-        ):
+        async for event in agent.run_turn(sid, message, resume):
             yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
 
     return StreamingResponse(
@@ -95,7 +75,6 @@ async def upload(request: Request, file: UploadFile = File(...)):
     """Dépose un fichier glissé dans le chat au même endroit que le cwd de
     Claude : il le lit directement avec son outil Read, pas besoin d'un
     protocole dédié."""
-    auth.current_user(request)
     ws = agent.workspace(_session_id(request))
 
     name = pathlib.Path(file.filename or "upload").name or "upload"
@@ -121,7 +100,6 @@ async def upload(request: Request, file: UploadFile = File(...)):
 @app.post("/api/session")
 async def remember_session(request: Request):
     """Le client nous rend l'id de session SDK reçu en fin de stream."""
-    auth.current_user(request)
     body = await request.json()
     request.session["sdk_session"] = body.get("session")
     return {"ok": True}
@@ -129,7 +107,6 @@ async def remember_session(request: Request):
 
 @app.post("/api/reset")
 async def reset(request: Request):
-    auth.current_user(request)
     request.session.pop("sdk_session", None)
     request.session["workspace"] = uuid.uuid4().hex
     return {"ok": True}
@@ -146,7 +123,6 @@ def _deck_path(request: Request, name: str) -> pathlib.Path:
 
 @app.get("/api/deck/{name}")
 async def download(request: Request, name: str):
-    auth.current_user(request)
     path = _deck_path(request, name)
     return FileResponse(path, filename=name, media_type=drive.MIME_PPTX)
 

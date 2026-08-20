@@ -14,7 +14,8 @@ os.environ.setdefault("WORKSPACE_ROOT", "/tmp/prepkit-smoke")
 
 from app import agent  # noqa: E402
 
-BRIEF = """Je fais le T'REX de mercredi. Mission chez un assureur mutualiste,
+BRIEF = """Je m'appelle Camille Melin. Je fais le T'REX de mercredi. Mission
+chez un assureur mutualiste,
 12 000 personnes, 4 designers. Outil interne de déclaration de sinistre, 900
 gestionnaires. On m'a demandé de refaire le parcours parce qu'il est moche. En
 semaine 2 j'ai vu que les gestionnaires ressaisissaient tout dans un second
@@ -40,8 +41,7 @@ async def main() -> int:
         print("ANTHROPIC_AUTH_TOKEN manquante (clé models.thiga.co)"); return 2
 
     saw_skill, text, decks, session = None, [], [], None
-    async for ev in agent.run_turn("smoke", "Camille Melin",
-                                   "camille.melin@thiga.co", BRIEF, None):
+    async for ev in agent.run_turn("smoke", BRIEF, None):
         if ev["type"] == "init":
             saw_skill = ev.get("skills")
             print("skills chargées :", saw_skill)

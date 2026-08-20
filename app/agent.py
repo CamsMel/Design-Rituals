@@ -49,7 +49,7 @@ def workspace(session_id: str) -> pathlib.Path:
     return d
 
 
-def _system_prompt(user_name: str, user_email: str) -> str:
+def _system_prompt() -> str:
     """Ce que l'agent sait du contexte web, en plus de la skill.
 
     On ne réécrit pas la skill ici. On lui dit seulement où il tourne, qui parle,
@@ -60,8 +60,9 @@ used by Thiga consultants to prepare their weekly ritual. Follow the
 tribe-design-rituals skill for everything about the rituals themselves.
 
 Context you cannot infer:
-- You are talking to {user_name} ({user_email}). Use that name on the deck cover
-  without asking for it.
+- There is no login, so you don't know who you're talking to. Fold "what's
+  your name, for the cover" into your first round of questions rather than
+  asking it separately — never leave it for last.
 - Today's working directory is the conversation's own folder. Write the finished
   .pptx there, at the top level, and nowhere else. The app detects it and offers
   it for download, so never tell the consultant to "find the file" somewhere.
@@ -78,8 +79,7 @@ message, as the skill requires, and don't restate the whole plan before acting.
 """
 
 
-def _options(session_id: str, user_name: str, user_email: str,
-             resume: str | None) -> ClaudeAgentOptions:
+def _options(session_id: str, resume: str | None) -> ClaudeAgentOptions:
     return ClaudeAgentOptions(
         cwd=str(workspace(session_id)),
         resume=resume,
@@ -90,7 +90,7 @@ def _options(session_id: str, user_name: str, user_email: str,
         # templates depuis le dossier de session est refusé.
         add_dirs=[str(pathlib.Path.home() / ".claude" / "skills")],
         system_prompt={"type": "preset", "preset": "claude_code",
-                       "append": _system_prompt(user_name, user_email)},
+                       "append": _system_prompt()},
         allowed_tools=["Read", "Write", "Edit", "Bash", "Glob", "Grep", "Skill"],
         # Pas d'humain derrière pour arbitrer, mais on garde le garde-fou du
         # handler ci-dessous plutôt que de tout ouvrir.
@@ -146,8 +146,8 @@ def existing_decks(session_id: str) -> list[str]:
     return sorted(p.name for p in workspace(session_id).glob("*.pptx"))
 
 
-async def run_turn(session_id: str, user_name: str, user_email: str,
-                   message: str, resume: str | None) -> AsyncIterator[dict]:
+async def run_turn(session_id: str, message: str,
+                   resume: str | None) -> AsyncIterator[dict]:
     """Joue un tour et rend des événements prêts à passer en SSE.
 
     Types émis : `text` (delta), `tool` (nom d'outil, pour l'indicateur
@@ -166,7 +166,7 @@ async def run_turn(session_id: str, user_name: str, user_email: str,
     async with lock:
         try:
             async with ClaudeSDKClient(
-                options=_options(session_id, user_name, user_email, resume)
+                options=_options(session_id, resume)
             ) as client:
                 await client.query(message)
 

@@ -151,7 +151,7 @@ CHAT_CSS = """
   .tg-tdr__attach:focus-visible { outline: 3px solid var(--tg-violet-light); outline-offset: 2px; }
   .tg-tdr__bar {
     display: flex; flex-wrap: wrap; gap: var(--s-xs); align-items: center;
-    justify-content: space-between; flex: none;
+    justify-content: flex-end; flex: none;
     padding: var(--s-sm) var(--s-md) var(--s-md);
     font-size: 13px; color: var(--tg-violet-light);
   }
@@ -189,9 +189,8 @@ CHAT_SECTION = """
       </div>
 
       <div id="tg-chat-gate" class="tg-tdr__gate" hidden>
-        <p>You're not signed in. Reload the page and enter the shared Tribe
-          Design password when your browser asks for it. Your notes stay in
-          this session and are never shared with the rest of the tribe.</p>
+        <p>Something went wrong loading the chat. Reload the page and try
+          again.</p>
         <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
                 id="tg-chat-gate-reload">Reload</button>
       </div>
@@ -207,7 +206,6 @@ CHAT_SECTION = """
       </form>
 
       <div class="tg-tdr__bar">
-        <span id="tg-chat-who"></span>
         <button type="button" id="tg-chat-reset">Start a new conversation</button>
       </div>
     </div>
@@ -223,7 +221,6 @@ CHAT_JS = """
   var input = document.getElementById('tg-chat-input');
   var send = document.getElementById('tg-chat-send');
   var hint = document.getElementById('tg-chat-hint');
-  var who = document.getElementById('tg-chat-who');
   var resetBtn = document.getElementById('tg-chat-reset');
   var drawer = document.getElementById('tg-chat-drawer');
   var backdrop = document.getElementById('tg-chat-backdrop');
@@ -524,7 +521,12 @@ CHAT_JS = """
         // prompt à trous à compléter avant d'envoyer.
         var ritualLabel = label.textContent.replace(/^Prepare my /, '');
         openDrawer(ritualLabel);
-        if (!form.hidden) ask("I'm preparing my " + ritualLabel + " for the Tribe Design ritual.");
+        input.value = ''; input.style.height = '';
+        if (!form.hidden) {
+          ask("I'm preparing my " + ritualLabel + " for the Tribe Design " +
+              "ritual. I haven't given you anything yet, so ask your " +
+              "questions straight away, no plan or preamble first.");
+        }
         return;
       }
       var prompt = (window.__TG_PROMPTS || {})[key];
@@ -542,7 +544,6 @@ CHAT_JS = """
     driveEnabled = !!cfg.drive_enabled;
     if (cfg.user) {
       form.hidden = false; gate.hidden = true;
-      who.textContent = 'Signed in as ' + cfg.user.name;
     } else {
       form.hidden = true; gate.hidden = false;
     }
