@@ -23,20 +23,53 @@ html = v1.OUT.read_text(encoding="utf-8")
 
 CHAT_CSS = """
 <style>
-  /* ------------------------------------------------------- panneau de chat */
-  .tg-tdr__chat {
-    background: var(--tg-russian-violet); color: var(--tg-white);
-    padding: var(--s-3xl) 0;
+  /* ------------------------------------------------------- drawer de chat */
+  .tg-tdr__drawer {
+    position: fixed; inset: 0; z-index: 1000; pointer-events: none;
   }
-  .tg-tdr__chat-shell {
-    margin-top: var(--s-xl); border-radius: var(--tg-r);
-    background: rgba(230,222,250,.07); border: 1px solid rgba(230,222,250,.16);
-    display: flex; flex-direction: column; min-height: 520px; overflow: hidden;
+  .tg-tdr__drawer-backdrop {
+    position: absolute; inset: 0; background: rgba(10,2,26,.6);
+    opacity: 0; transition: opacity .2s ease;
   }
+  .tg-tdr__drawer-panel {
+    position: absolute; top: 0; right: 0; height: 100%;
+    width: min(480px, 100%); background: var(--tg-russian-violet);
+    color: var(--tg-white); display: flex; flex-direction: column;
+    box-shadow: -12px 0 40px rgba(0,0,0,.35);
+    transform: translateX(100%); transition: transform .25s ease;
+  }
+  .tg-tdr__drawer--open { pointer-events: auto; }
+  .tg-tdr__drawer--open .tg-tdr__drawer-backdrop { opacity: 1; }
+  .tg-tdr__drawer--open .tg-tdr__drawer-panel { transform: translateX(0); }
+  .tg-tdr__drawer-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--s-md); border-bottom: 1px solid rgba(230,222,250,.16);
+    flex: none;
+  }
+  .tg-tdr__drawer-title {
+    font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 15px;
+  }
+  .tg-tdr__drawer-close {
+    background: none; border: 0; color: var(--tg-white); font-size: 22px;
+    line-height: 1; cursor: pointer; min-width: 44px; min-height: 44px;
+  }
+  .tg-tdr__drawer-close:focus-visible { outline: 3px solid var(--tg-violet-light); }
   .tg-tdr__log {
-    flex: 1; padding: var(--s-md); overflow-y: auto; max-height: 60vh;
+    flex: 1; padding: var(--s-md); overflow-y: auto;
     display: flex; flex-direction: column; gap: var(--s-sm);
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; position: relative;
+  }
+  .tg-tdr__log--dragover::after {
+    content: 'Drop to attach'; position: absolute; inset: var(--s-sm);
+    border: 2px dashed var(--tg-violet-light); border-radius: var(--tg-r);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Kanit', sans-serif; font-weight: 700; letter-spacing: .04em;
+    color: var(--tg-violet-light); background: rgba(27,4,66,.85);
+    pointer-events: none;
+  }
+  .tg-tdr__attachment {
+    align-self: flex-end; font-size: 13px; color: var(--tg-violet-light);
+    display: flex; align-items: center; gap: 6px;
   }
   .tg-tdr__msg { max-width: 78ch; font-size: 15px; line-height: 1.6; }
   .tg-tdr__msg--me {
@@ -109,9 +142,17 @@ CHAT_CSS = """
   }
   .tg-tdr__send[disabled] { opacity: .45; cursor: default; }
   .tg-tdr__send:focus-visible { outline: 3px solid var(--tg-violet-light); outline-offset: 3px; }
+  .tg-tdr__attach {
+    background: rgba(230,222,250,.1); border: 1px solid rgba(230,222,250,.28);
+    color: var(--tg-white); border-radius: var(--tg-r); min-width: 44px;
+    min-height: 52px; font-size: 17px; cursor: pointer;
+  }
+  .tg-tdr__attach[disabled] { opacity: .45; cursor: default; }
+  .tg-tdr__attach:focus-visible { outline: 3px solid var(--tg-violet-light); outline-offset: 2px; }
   .tg-tdr__bar {
     display: flex; flex-wrap: wrap; gap: var(--s-xs); align-items: center;
-    justify-content: space-between; margin-top: var(--s-sm);
+    justify-content: space-between; flex: none;
+    padding: var(--s-sm) var(--s-md) var(--s-md);
     font-size: 13px; color: var(--tg-violet-light);
   }
   .tg-tdr__bar button {
@@ -129,44 +170,48 @@ CHAT_CSS = """
 """
 
 CHAT_SECTION = """
-  <section class="tg-tdr__chat" id="tg-tdr-chat">
-    <div class="tg-tdr__wrap">
-      <span class="tg-tdr__eyebrow">Talk to Claude</span>
-      <h2 class="tg-tdr__display tg-tdr__h2">Build it right here</h2>
-      <p class="tg-tdr__section-lede">Pick your ritual below and it lands in the
-        box, or just say what you have. Paste your notes in French or English.
-        You get the .pptx back in this window.</p>
-
-      <div class="tg-tdr__chat-shell">
-        <div class="tg-tdr__log" id="tg-chat-log" role="log" aria-live="polite"
-             aria-label="Conversation with Claude">
-          <p class="tg-tdr__hint" id="tg-chat-hint">Tell Claude which ritual you
-            signed up for and roughly what you want to talk about. Three words a
-            line is enough.</p>
-        </div>
-
-        <div id="tg-chat-gate" class="tg-tdr__gate" hidden>
-          <p>You're not signed in. Reload the page and enter the shared Tribe
-            Design password when your browser asks for it. Your notes stay in
-            this session and are never shared with the rest of the tribe.</p>
-          <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
-                  id="tg-chat-gate-reload">Reload</button>
-        </div>
-
-        <form class="tg-tdr__composer" id="tg-chat-form" hidden>
-          <label class="tg-tdr__sr" for="tg-chat-input" style="position:absolute;left:-9999px">Your message</label>
-          <textarea id="tg-chat-input" rows="2"
-                    placeholder="I'm doing the T'REX on Wednesday, my mission was at an insurer..."></textarea>
-          <button class="tg-tdr__send" type="submit" id="tg-chat-send">Send</button>
-        </form>
+  <div class="tg-tdr__drawer" id="tg-chat-drawer" aria-hidden="true">
+    <div class="tg-tdr__drawer-backdrop" id="tg-chat-backdrop"></div>
+    <div class="tg-tdr__drawer-panel" role="dialog" aria-modal="true"
+         aria-label="Conversation with Claude">
+      <div class="tg-tdr__drawer-head">
+        <span class="tg-tdr__drawer-title" id="tg-chat-title">Talk to Claude</span>
+        <button type="button" class="tg-tdr__drawer-close" id="tg-chat-close"
+                aria-label="Close">&times;</button>
       </div>
+
+      <div class="tg-tdr__log" id="tg-chat-log" role="log" aria-live="polite"
+           aria-label="Conversation with Claude">
+        <p class="tg-tdr__hint" id="tg-chat-hint">Tell Claude which ritual you
+          signed up for and roughly what you want to talk about. Three words a
+          line is enough, and you can drag a brief or a screenshot straight in
+          here.</p>
+      </div>
+
+      <div id="tg-chat-gate" class="tg-tdr__gate" hidden>
+        <p>You're not signed in. Reload the page and enter the shared Tribe
+          Design password when your browser asks for it. Your notes stay in
+          this session and are never shared with the rest of the tribe.</p>
+        <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
+                id="tg-chat-gate-reload">Reload</button>
+      </div>
+
+      <form class="tg-tdr__composer" id="tg-chat-form" hidden>
+        <label class="tg-tdr__sr" for="tg-chat-input" style="position:absolute;left:-9999px">Your message</label>
+        <textarea id="tg-chat-input" rows="2"
+                  placeholder="Three words a line is plenty, or drag a file in..."></textarea>
+        <input type="file" id="tg-chat-file" multiple hidden>
+        <button type="button" class="tg-tdr__attach" id="tg-chat-attach"
+                aria-label="Attach a file" title="Attach a file">&#128206;</button>
+        <button class="tg-tdr__send" type="submit" id="tg-chat-send">Send</button>
+      </form>
 
       <div class="tg-tdr__bar">
         <span id="tg-chat-who"></span>
         <button type="button" id="tg-chat-reset">Start a new conversation</button>
       </div>
     </div>
-  </section>
+  </div>
 """
 
 CHAT_JS = """
@@ -180,11 +225,38 @@ CHAT_JS = """
   var hint = document.getElementById('tg-chat-hint');
   var who = document.getElementById('tg-chat-who');
   var resetBtn = document.getElementById('tg-chat-reset');
+  var drawer = document.getElementById('tg-chat-drawer');
+  var backdrop = document.getElementById('tg-chat-backdrop');
+  var closeBtn = document.getElementById('tg-chat-close');
+  var title = document.getElementById('tg-chat-title');
+  var attachBtn = document.getElementById('tg-chat-attach');
+  var fileInput = document.getElementById('tg-chat-file');
   if (!log || !form) return;
 
   var driveEnabled = false;
   var busyEl = null;
   var streamEl = null;
+  var lastFocused = null;
+
+  function openDrawer(label) {
+    lastFocused = document.activeElement;
+    if (label) title.textContent = label;
+    drawer.classList.add('tg-tdr__drawer--open');
+    drawer.setAttribute('aria-hidden', 'false');
+    (form.hidden ? gate.querySelector('button, a') : input).focus();
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('tg-tdr__drawer--open');
+    drawer.setAttribute('aria-hidden', 'true');
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  closeBtn.addEventListener('click', closeDrawer);
+  backdrop.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer.classList.contains('tg-tdr__drawer--open')) closeDrawer();
+  });
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -275,9 +347,37 @@ CHAT_JS = """
     log.appendChild(w); scroll();
   }
 
+  function addAttachment(name) {
+    if (hint) { hint.remove(); hint = null; }
+    log.appendChild(el('div', 'tg-tdr__attachment', '📎 ' + name));
+    scroll();
+  }
+
+  async function uploadFile(file) {
+    var body = new FormData();
+    body.append('file', file);
+    var res = await fetch('/api/upload', { method: 'POST', body: body });
+    if (res.status === 401) { location.reload(); throw new Error('not signed in'); }
+    if (!res.ok) throw new Error('upload failed (' + res.status + ')');
+    return (await res.json()).name;
+  }
+
+  async function attachFiles(files) {
+    for (var i = 0; i < files.length; i++) {
+      try {
+        var name = await uploadFile(files[i]);
+        addAttachment(name);
+        await ask("I've attached: " + name);
+      } catch (e) {
+        addError('Could not attach ' + files[i].name + ': ' + String(e.message || e));
+      }
+    }
+  }
+
   function lock(on) {
     send.disabled = on;
     input.disabled = on;
+    if (attachBtn) attachBtn.disabled = on;
     send.textContent = on ? 'Working' : 'Send';
   }
 
@@ -362,24 +462,75 @@ CHAT_JS = """
     fetch('/api/reset', { method: 'POST' }).then(function () { location.reload(); });
   });
 
-  /* Les boutons de la V1 remplissent la boîte au lieu de copier : en V2 il n'y
-     a plus besoin d'aller coller le prompt ailleurs. */
+  if (attachBtn && fileInput) {
+    attachBtn.addEventListener('click', function () { fileInput.click(); });
+    fileInput.addEventListener('change', function () {
+      if (fileInput.files.length) attachFiles(fileInput.files);
+      fileInput.value = '';
+    });
+  }
+
+  var dragDepth = 0;
+  log.addEventListener('dragover', function (e) {
+    if (form.hidden) return;
+    e.preventDefault();
+  });
+  log.addEventListener('dragenter', function (e) {
+    if (form.hidden) return;
+    e.preventDefault();
+    dragDepth++;
+    log.classList.add('tg-tdr__log--dragover');
+  });
+  log.addEventListener('dragleave', function () {
+    dragDepth = Math.max(0, dragDepth - 1);
+    if (dragDepth === 0) log.classList.remove('tg-tdr__log--dragover');
+  });
+  log.addEventListener('drop', function (e) {
+    e.preventDefault();
+    dragDepth = 0;
+    log.classList.remove('tg-tdr__log--dragover');
+    if (form.hidden || !e.dataTransfer.files.length) return;
+    attachFiles(e.dataTransfer.files);
+  });
+
+  /* Les boutons de la V1 pilotent le drawer en V2 plutôt que de copier un
+     prompt dans le presse-papiers. */
   document.querySelectorAll('[data-copy]').forEach(function (btn) {
     var label = btn.querySelector('.tg-tdr__copy-label') || btn;
+    var isHero = !!btn.closest('header');
     if (/^Copy the /.test(label.textContent)) {
       label.textContent = label.textContent.replace(/^Copy the /, 'Prepare my ').replace(/ prompt$/, '');
     } else if (/starter prompt|this prompt/.test(label.textContent)) {
       label.textContent = 'Start in the chat';
     }
+
+    if (isHero) {
+      // "Prepare my starter" : pas de chat direct, on va choisir un rituel.
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var rituals = document.getElementById('tg-tdr-rituals');
+        if (rituals) rituals.scrollIntoView({ block: 'start' });
+      }, true);
+      return;
+    }
+
+    var key = btn.getAttribute('data-copy');
     btn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      var key = btn.getAttribute('data-copy');
+      if (key !== 'generic') {
+        // Un rituel précis : Claude pose ses questions directement, pas de
+        // prompt à trous à compléter avant d'envoyer.
+        var ritualLabel = label.textContent.replace(/^Prepare my /, '');
+        openDrawer(ritualLabel);
+        if (!form.hidden) ask("I'm preparing my " + ritualLabel + " for the Tribe Design ritual.");
+        return;
+      }
       var prompt = (window.__TG_PROMPTS || {})[key];
       if (!prompt) return;
+      openDrawer('Talk to Claude');
       input.value = prompt;
-      document.getElementById('tg-tdr-chat').scrollIntoView({ block: 'start' });
-      input.focus();
       input.dispatchEvent(new Event('input'));
     }, true);
   });
@@ -412,9 +563,6 @@ anchor = '<section class="tg-tdr__section tg-tdr__section--pale" id="tg-tdr-how"
 assert anchor in html, "ancre de la section 'how' introuvable dans la V1"
 html = html.replace(anchor, CHAT_SECTION + "\n  " + anchor)
 html = html.replace("</body>", PROMPT_BRIDGE + CHAT_JS + "</body>")
-
-# En V2 le CTA du hero envoie vers le chat plutôt que vers la liste.
-html = html.replace(">See the 8 rituals</a>", ">See the 8 rituals</a>")
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
 OUT.write_text(html, encoding="utf-8")

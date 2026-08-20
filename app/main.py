@@ -7,12 +7,14 @@ import os
 import pathlib
 import uuid
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
 from . import agent, auth, drive
+
+MAX_UPLOAD_BYTES = 20 * 1024 * 1024
 
 HERE = pathlib.Path(__file__).parent
 STATIC = HERE / "static"
@@ -86,6 +88,34 @@ async def chat(request: Request):
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+@app.post("/api/upload")
+async def upload(request: Request, file: UploadFile = File(...)):
+    """Dépose un fichier glissé dans le chat au même endroit que le cwd de
+    Claude : il le lit directement avec son outil Read, pas besoin d'un
+    protocole dédié."""
+    auth.current_user(request)
+    ws = agent.workspace(_session_id(request))
+
+    name = pathlib.Path(file.filename or "upload").name or "upload"
+    dest = ws / name
+    i = 1
+    while dest.exists():
+        dest = ws / f"{pathlib.Path(name).stem}-{i}{pathlib.Path(name).suffix}"
+        i += 1
+
+    size = 0
+    with dest.open("wb") as out:
+        while chunk := await file.read(1024 * 1024):
+            size += len(chunk)
+            if size > MAX_UPLOAD_BYTES:
+                out.close()
+                dest.unlink(missing_ok=True)
+                raise HTTPException(status_code=413, detail="file too large")
+            out.write(chunk)
+
+    return {"name": dest.name}
 
 
 @app.post("/api/session")
