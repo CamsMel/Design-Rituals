@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tribe Design · Prepare your ritual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+.tg-tdr {
+  --tg-russian-violet: #1B0442;
+  --tg-electric-indigo: #5818FF;
+  --tg-lavender: #E6DEFA;
+  --tg-violet-pale: #F2F0FF;
+  --tg-violet-light: #C4ACFF;
+  --tg-white: #FFFFFF;
+  --tg-r: 6px;
+  --s-xs: 8px; --s-sm: 16px; --s-md: 24px; --s-lg: 32px;
+  --s-xl: 48px; --s-2xl: 64px; --s-3xl: 96px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--tg-russian-violet);
+  background: var(--tg-white);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+.tg-tdr *, .tg-tdr *::before, .tg-tdr *::after { box-sizing: border-box; }
+/* :where() garde une spécificité nulle, sinon ce reset écrase tous les
+   margin-top posés plus bas par les classes et la page perd son rythme. */
+.tg-tdr :where(h1, h2, h3, p, ol, ul, li, figure) { margin: 0; padding: 0; }
+.tg-tdr :where(ol, ul) { list-style: none; }
+html, body { margin: 0; padding: 0; background: #FFFFFF; }
+
+.tg-tdr__wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s-md); }
+/* La charte demande corps = interlignage sur les accroches. En capitales
+   françaises accentuées, 1.0 fait toucher les É de la ligne du dessous :
+   1.06 laisse juste la place aux accents sans casser le bloc. */
+.tg-tdr__display {
+  font-family: 'Kanit', sans-serif; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0; line-height: 1.06;
+}
+.tg-tdr__eyebrow {
+  font-family: 'Kanit', sans-serif; font-weight: 500;
+  text-transform: uppercase; font-size: 12px; letter-spacing: .12em;
+}
+.tg-tdr__rule {
+  width: 72px; height: 4px; background: var(--tg-electric-indigo);
+  border: 0; margin: var(--s-md) 0;
+}
+
+/* ---------------------------------------------------------------- hero */
+.tg-tdr__hero {
+  position: relative; overflow: hidden;
+  background: var(--tg-russian-violet); color: var(--tg-white);
+  padding: var(--s-2xl) 0 var(--s-3xl);
+}
+/* La forme brand : la contreforme du T, cadrée de sorte qu'on lise le chevron
+   sur le bord droit plutôt qu'un bloc posé là. */
+.tg-tdr__hero-shape {
+  position: absolute; top: -14%; right: -18%; width: 58%; min-width: 420px;
+  opacity: .1; pointer-events: none; overflow: hidden;
+}
+.tg-tdr__hero-shape img { width: 100%; display: block; transform: rotate(180deg); }
+.tg-tdr__brandbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s-md); margin-bottom: var(--s-3xl);
+}
+.tg-tdr__logo { height: 30px; width: auto; display: block; }
+.tg-tdr__brandbar .tg-tdr__eyebrow { color: var(--tg-violet-light); }
+.tg-tdr__hero-inner { position: relative; max-width: 900px; }
+.tg-tdr__h1 { font-size: clamp(36px, 5.6vw, 68px); }
+.tg-tdr__h1 em { font-style: normal; color: var(--tg-violet-light); }
+.tg-tdr__lede {
+  font-size: clamp(17px, 1.7vw, 20px); color: var(--tg-lavender);
+  max-width: 62ch; margin-top: var(--s-md);
+}
+.tg-tdr__lede strong { color: var(--tg-white); font-weight: 600; }
+.tg-tdr__ctas { display: flex; flex-wrap: wrap; gap: var(--s-sm); margin-top: var(--s-xl); }
+
+/* ---------------------------------------------------------------- buttons */
+.tg-tdr__btn {
+  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+  padding: 14px 22px; min-height: 48px; border-radius: var(--tg-r);
+  border: 1px solid transparent; cursor: pointer;
+  transition: transform 160ms ease-out, opacity 160ms ease-out;
+}
+.tg-tdr__btn:hover { transform: translateY(-2px); }
+.tg-tdr__btn:focus-visible {
+  outline: 3px solid var(--tg-violet-light); outline-offset: 3px;
+}
+.tg-tdr__btn--primary { background: var(--tg-electric-indigo); color: var(--tg-white); }
+.tg-tdr__btn--ghost {
+  background: transparent; color: var(--tg-white);
+  border-color: rgba(230,222,250,.45);
+}
+.tg-tdr__btn--ghost:hover { border-color: var(--tg-violet-light); }
+
+/* ---------------------------------------------------------------- sections */
+.tg-tdr__section { padding: var(--s-3xl) 0; }
+.tg-tdr__section--pale { background: var(--tg-violet-pale); }
+.tg-tdr__section--dark { background: var(--tg-russian-violet); color: var(--tg-white); }
+.tg-tdr__h2 { font-size: clamp(28px, 3.6vw, 44px); }
+.tg-tdr__section-lede { max-width: 62ch; margin-top: var(--s-sm); font-size: 17px; }
+.tg-tdr__section--dark .tg-tdr__section-lede { color: var(--tg-lavender); }
+.tg-tdr__section--dark .tg-tdr__eyebrow { color: var(--tg-violet-light); }
+
+/* steps */
+.tg-tdr__steps {
+  display: grid; gap: var(--s-md); margin-top: var(--s-xl);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.tg-tdr__step {
+  background: var(--tg-white); border-radius: var(--tg-r);
+  padding: var(--s-lg); border-top: 4px solid var(--tg-electric-indigo);
+}
+.tg-tdr__step-num {
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 34px;
+  color: var(--tg-violet-light); display: block; line-height: 1;
+}
+.tg-tdr__step-title {
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 20px;
+  margin-top: var(--s-sm); line-height: 1.25;
+}
+.tg-tdr__step-body { margin-top: 10px; font-size: 15px; }
+
+/* rituals */
+.tg-tdr__explorer {
+  display: grid; grid-template-columns: minmax(240px, 340px) 1fr;
+  gap: var(--s-lg); margin-top: var(--s-xl); align-items: start;
+}
+.tg-tdr__cards { display: flex; flex-direction: column; gap: var(--s-xs); }
+.tg-tdr__card {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  font-family: 'Inter', sans-serif; min-height: 64px;
+  padding: 14px var(--s-sm); border-radius: var(--tg-r);
+  background: rgba(230,222,250,.08); color: var(--tg-white);
+  border: 1px solid rgba(230,222,250,.18);
+  transition: background 180ms ease-out, transform 180ms ease-out,
+              border-color 180ms ease-out;
+}
+.tg-tdr__card:hover { background: rgba(230,222,250,.16); transform: translateX(3px); }
+.tg-tdr__card:focus-visible {
+  outline: 3px solid var(--tg-violet-light); outline-offset: 2px;
+}
+.tg-tdr__card.is-active {
+  background: var(--tg-electric-indigo); border-color: var(--tg-electric-indigo);
+}
+.tg-tdr__card-name {
+  display: block; font-family: 'Kanit', sans-serif; font-weight: 800;
+  font-size: 17px; text-transform: uppercase; line-height: 1.2;
+}
+.tg-tdr__card-kicker {
+  display: block; font-size: 13px; margin-top: 2px; line-height: 1.35;
+  color: var(--tg-lavender);
+}
+.tg-tdr__card.is-active .tg-tdr__card-kicker { color: rgba(255,255,255,.88); }
+.tg-tdr__card-meta {
+  display: block; font-size: 11px; margin-top: 5px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--tg-violet-light);
+}
+.tg-tdr__card.is-active .tg-tdr__card-meta { color: rgba(255,255,255,.75); }
+
+.tg-tdr__panels { position: relative; }
+.tg-tdr__panel {
+  background: rgba(230,222,250,.07); border-radius: var(--tg-r);
+  border: 1px solid rgba(230,222,250,.16);
+  padding: var(--s-lg);
+}
+.tg-tdr__panel-kicker {
+  font-family: 'Kanit', sans-serif; font-weight: 500; font-size: 12px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tg-violet-light);
+}
+.tg-tdr__panel-title {
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 30px;
+  text-transform: uppercase; margin-top: 6px; line-height: 1.1;
+}
+.tg-tdr__panel-promise { margin-top: var(--s-sm); color: var(--tg-lavender); font-size: 16px; }
+.tg-tdr__trap {
+  margin-top: var(--s-md); padding: var(--s-sm) var(--s-md);
+  background: rgba(88,24,255,.22); border-left: 3px solid var(--tg-violet-light);
+  border-radius: 0 var(--tg-r) var(--tg-r) 0;
+}
+.tg-tdr__trap-label {
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--tg-violet-light);
+}
+.tg-tdr__trap p { font-size: 15px; margin-top: 4px; color: var(--tg-white); }
+.tg-tdr__panel-sub {
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 12px;
+  letter-spacing: .12em; text-transform: uppercase;
+  margin-top: var(--s-md); color: var(--tg-violet-light);
+}
+.tg-tdr__asks { counter-reset: ask; margin-top: var(--s-xs); }
+.tg-tdr__asks li {
+  counter-increment: ask; position: relative; padding-left: 30px;
+  font-size: 15px; margin-top: 9px; color: var(--tg-lavender);
+}
+.tg-tdr__asks li::before {
+  content: counter(ask); position: absolute; left: 0; top: 1px;
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 13px;
+  color: var(--tg-white); background: rgba(88,24,255,.55);
+  width: 21px; height: 21px; border-radius: var(--tg-r);
+  display: grid; place-items: center;
+}
+.tg-tdr__panel-extra {
+  margin-top: var(--s-md); font-size: 14px; color: var(--tg-violet-light);
+  border-top: 1px solid rgba(230,222,250,.2); padding-top: var(--s-sm);
+}
+.tg-tdr__copy {
+  margin-top: var(--s-md); cursor: pointer; min-height: 48px;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 13px 20px; border-radius: var(--tg-r);
+  background: var(--tg-white); color: var(--tg-russian-violet); border: 0;
+  transition: transform 160ms ease-out;
+}
+.tg-tdr__copy:hover { transform: translateY(-2px); }
+.tg-tdr__copy:focus-visible {
+  outline: 3px solid var(--tg-violet-light); outline-offset: 3px;
+}
+.tg-tdr__copy.is-done { background: var(--tg-violet-light); }
+
+/* guardrails */
+/* Deux colonnes fixes plutôt qu'auto-fit : à quatre items, auto-fit laisse
+   le dernier orphelin sur une deuxième ligne. */
+.tg-tdr__guards {
+  display: grid; gap: var(--s-lg) var(--s-xl); margin-top: var(--s-xl);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.tg-tdr__guard {
+  padding: 4px 0 4px var(--s-md);
+  border-left: 3px solid var(--tg-electric-indigo);
+}
+.tg-tdr__guard-title {
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 18px;
+  text-transform: uppercase; line-height: 1.2;
+}
+.tg-tdr__guard p { font-size: 15px; margin-top: 6px; }
+
+/* start block */
+.tg-tdr__start {
+  display: grid; grid-template-columns: 1.15fr .85fr; gap: var(--s-lg);
+  margin-top: var(--s-xl); align-items: start;
+}
+.tg-tdr__pre {
+  background: var(--tg-russian-violet); color: var(--tg-lavender);
+  border-radius: var(--tg-r); padding: var(--s-md);
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 13.5px; line-height: 1.65; white-space: pre-wrap;
+  word-break: break-word;
+}
+.tg-tdr__pre b { color: var(--tg-violet-light); font-weight: 400; }
+.tg-tdr__aside {
+  background: var(--tg-white); border: 1px solid var(--tg-lavender);
+  border-radius: var(--tg-r); padding: var(--s-md);
+}
+.tg-tdr__aside h3 {
+  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 16px;
+  text-transform: uppercase;
+}
+.tg-tdr__aside p { font-size: 14.5px; margin-top: var(--s-xs); }
+.tg-tdr__aside p + h3, .tg-tdr__aside .tg-tdr__drive + h3 { margin-top: var(--s-md); }
+.tg-tdr__drive {
+  display: inline-block; margin-top: var(--s-sm); font-size: 13px;
+  font-family: ui-monospace, Menlo, monospace; padding: 7px 11px;
+  background: var(--tg-violet-pale); border-radius: var(--tg-r);
+  color: var(--tg-russian-violet);
+}
+
+/* footer */
+.tg-tdr__footer {
+  background: var(--tg-russian-violet); color: var(--tg-lavender);
+  padding: var(--s-xl) 0;
+}
+.tg-tdr__footer-inner {
+  display: flex; flex-wrap: wrap; gap: var(--s-md);
+  align-items: flex-end; justify-content: space-between;
+}
+.tg-tdr__footer-sym { height: 40px; width: auto; display: block; }
+.tg-tdr__footer p { font-size: 13.5px; max-width: 46ch; }
+.tg-tdr__footer a { color: var(--tg-violet-light); }
+
+/* reveal */
+.tg-tdr__step, .tg-tdr__guard, .tg-tdr__card {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 450ms ease-out, transform 450ms ease-out,
+              background 180ms ease-out, border-color 180ms ease-out;
+  transition-delay: calc(var(--tg-i, 0) * 80ms);
+}
+.is-revealed .tg-tdr__step, .is-revealed .tg-tdr__guard,
+.is-revealed .tg-tdr__card { opacity: 1; transform: translateY(0); }
+.tg-tdr__card:hover { transition-delay: 0ms; }
+
+@media (max-width: 860px) {
+  .tg-tdr__explorer, .tg-tdr__start,
+  .tg-tdr__guards { grid-template-columns: minmax(0, 1fr); }
+  .tg-tdr__hero { padding-top: var(--s-lg); }
+  .tg-tdr__brandbar { margin-bottom: var(--s-xl); }
+  .tg-tdr__section { padding: var(--s-2xl) 0; }
+  .tg-tdr__hero-shape { opacity: .08; width: 78%; right: -28%; }
+  .tg-tdr__panel { padding: var(--s-md); }
+}
+@media (max-width: 560px) {
+  /* Le kicker de la brandbar se plie en trois lignes à côté du logo et
+     abîme l'en-tête. Le titre juste dessous porte déjà l'information. */
+  .tg-tdr__brandbar .tg-tdr__eyebrow { display: none; }
+  .tg-tdr__logo { height: 26px; }
+  .tg-tdr__ctas .tg-tdr__btn { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tg-tdr *, .tg-tdr *::before, .tg-tdr *::after {
+    transition: none !important; animation: none !important;
+  }
+  .tg-tdr__step, .tg-tdr__guard, .tg-tdr__card { opacity: 1; transform: none; }
+}
+</style>
+
+<style>
+  /* ------------------------------------------------------- panneau de chat */
+  .tg-tdr__chat {
+    background: var(--tg-russian-violet); color: var(--tg-white);
+    padding: var(--s-3xl) 0;
+  }
+  .tg-tdr__chat-shell {
+    margin-top: var(--s-xl); border-radius: var(--tg-r);
+    background: rgba(230,222,250,.07); border: 1px solid rgba(230,222,250,.16);
+    display: flex; flex-direction: column; min-height: 520px; overflow: hidden;
+  }
+  .tg-tdr__log {
+    flex: 1; padding: var(--s-md); overflow-y: auto; max-height: 60vh;
+    display: flex; flex-direction: column; gap: var(--s-sm);
+    scroll-behavior: smooth;
+  }
+  .tg-tdr__msg { max-width: 78ch; font-size: 15px; line-height: 1.6; }
+  .tg-tdr__msg--me {
+    align-self: flex-end; background: var(--tg-electric-indigo);
+    padding: 11px 15px; border-radius: var(--tg-r); white-space: pre-wrap;
+  }
+  .tg-tdr__msg--claude { align-self: flex-start; color: var(--tg-lavender); white-space: pre-wrap; }
+  .tg-tdr__msg--claude strong { color: var(--tg-white); }
+  .tg-tdr__who {
+    display: block; font-family: 'Kanit', sans-serif; font-weight: 800;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--tg-violet-light); margin-bottom: 4px;
+  }
+  .tg-tdr__hint {
+    align-self: center; text-align: center; color: var(--tg-violet-light);
+    font-size: 14px; max-width: 52ch; padding: var(--s-lg) 0;
+  }
+  .tg-tdr__busy {
+    align-self: flex-start; font-size: 13px; color: var(--tg-violet-light);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tg-tdr__busy span {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--tg-violet-light);
+    animation: tgpulse 1.1s ease-in-out infinite;
+  }
+  .tg-tdr__busy span:nth-child(2) { animation-delay: .18s; }
+  .tg-tdr__busy span:nth-child(3) { animation-delay: .36s; }
+  @keyframes tgpulse { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+
+  .tg-tdr__deck {
+    align-self: flex-start; background: var(--tg-white);
+    color: var(--tg-russian-violet); border-radius: var(--tg-r);
+    padding: var(--s-md); max-width: 46ch;
+  }
+  .tg-tdr__deck-name {
+    font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 15px;
+    display: block; word-break: break-word;
+  }
+  .tg-tdr__deck-todo { font-size: 13px; margin-top: 6px; }
+  .tg-tdr__deck-acts { display: flex; flex-wrap: wrap; gap: var(--s-xs); margin-top: var(--s-sm); }
+  .tg-tdr__mini {
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 10px 15px; min-height: 44px; border-radius: var(--tg-r);
+    border: 1px solid var(--tg-russian-violet); cursor: pointer;
+    background: var(--tg-russian-violet); color: var(--tg-white);
+    text-decoration: none; display: inline-flex; align-items: center;
+  }
+  .tg-tdr__mini--ghost { background: transparent; color: var(--tg-russian-violet); }
+  .tg-tdr__mini:focus-visible { outline: 3px solid var(--tg-electric-indigo); outline-offset: 2px; }
+
+  .tg-tdr__composer {
+    border-top: 1px solid rgba(230,222,250,.16); padding: var(--s-md);
+    display: flex; gap: var(--s-sm); align-items: flex-end;
+  }
+  .tg-tdr__composer textarea {
+    flex: 1; resize: none; font-family: 'Inter', sans-serif; font-size: 15px;
+    line-height: 1.5; color: var(--tg-white); background: rgba(27,4,66,.55);
+    border: 1px solid rgba(230,222,250,.28); border-radius: var(--tg-r);
+    padding: 12px 14px; min-height: 52px; max-height: 220px;
+  }
+  .tg-tdr__composer textarea::placeholder { color: rgba(230,222,250,.5); }
+  .tg-tdr__composer textarea:focus-visible {
+    outline: none; border-color: var(--tg-violet-light);
+  }
+  .tg-tdr__send {
+    font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+    background: var(--tg-electric-indigo); color: var(--tg-white);
+    border: 0; border-radius: var(--tg-r); padding: 14px 22px; min-height: 52px;
+    cursor: pointer;
+  }
+  .tg-tdr__send[disabled] { opacity: .45; cursor: default; }
+  .tg-tdr__send:focus-visible { outline: 3px solid var(--tg-violet-light); outline-offset: 3px; }
+  .tg-tdr__bar {
+    display: flex; flex-wrap: wrap; gap: var(--s-xs); align-items: center;
+    justify-content: space-between; margin-top: var(--s-sm);
+    font-size: 13px; color: var(--tg-violet-light);
+  }
+  .tg-tdr__bar button {
+    background: none; border: 0; color: var(--tg-violet-light); cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 13px; text-decoration: underline;
+    padding: 8px 0; min-height: 44px;
+  }
+  .tg-tdr__gate { padding: var(--s-2xl) var(--s-md); text-align: center; }
+  .tg-tdr__gate p { color: var(--tg-lavender); max-width: 46ch; margin: 0 auto var(--s-md); }
+  @media (prefers-reduced-motion: reduce) {
+    .tg-tdr__log { scroll-behavior: auto; }
+    .tg-tdr__busy span { animation: none; opacity: .7; }
+  }
+</style>
+</head>
+<body>
+<main class="tg-tdr">
+
+  <header class="tg-tdr__hero" id="tg-tdr-hero">
+    <div class="tg-tdr__hero-shape" aria-hidden="true">
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTG9nbyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNDA1LjA0IDMwMCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2U2ZGVmYTsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMCw2LjI1djk4LjA5YzAsMy40NSwyLjgsNi4yNSw2LjI1LDYuMjVoNjMuOWMxLjQxLDAsMi43OS0uNDgsMy44OS0xLjM2TDE5OC42Myw5LjkzYzIuMjgtMS44Miw1LjUxLTEuODIsNy43OSwwbDEyNC41OSw5OS4zYzEuMTEuODgsMi40OCwxLjM2LDMuODksMS4zNmg2My45YzMuNDUsMCw2LjI1LTIuOCw2LjI1LTYuMjVWNi4yNWMwLTMuNDUtMi44LTYuMjUtNi4yNS02LjI1SDYuMjVDMi44LDAsMCwyLjgsMCw2LjI1WiIvPgogIDxyZWN0IGNsYXNzPSJjbHMtMSIgeD0iMTQ3LjIzIiB5PSIxMTAuMzQiIHdpZHRoPSIxMTAuNTgiIGhlaWdodD0iMTg5LjY2IiByeD0iNi4yNSIgcnk9IjYuMjUiLz4KPC9zdmc+" alt="">
+    </div>
+    <div class="tg-tdr__wrap">
+      <div class="tg-tdr__brandbar">
+        <img class="tg-tdr__logo" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTG9nbyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNDkwLjA1IDU5LjUiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6ICNmZmY7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI4LjU4LDIwLjU4SDEuODljLTEuMiwwLTIuMS0xLjExLTEuODUtMi4yOEwzLjI2LDMuMTFjLjE4LS44Ny45Ni0xLjUsMS44NS0xLjVoOTEuMzRjMS4yLDAsMi4xLDEuMTEsMS44NSwyLjI4bC0zLjIyLDE1LjJjLS4xOC44Ny0uOTYsMS41LTEuODUsMS41aC0yOC4zYy0uODksMC0xLjY2LjYyLTEuODUsMS40OWwtNy4zMiwzNC4zMmMtLjE5Ljg3LS45NiwxLjQ5LTEuODUsMS40OWgtMjguNjJjLTEuMiwwLTIuMS0xLjExLTEuODUtMi4yOGw2Ljk5LTMyLjc0Yy4yNS0xLjE4LS42NS0yLjI4LTEuODUtMi4yOFoiLz4KICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMzYuOTMsMy44OWwtMi45MiwxMy42OWMtLjI1LDEuMTguNjUsMi4yOCwxLjg1LDIuMjhoMzAuMTVjLjg5LDAsMS42Ni0uNjIsMS44NS0xLjQ5bDMuMjYtMTUuMjZjLjE5LS44Ny45Ni0xLjQ5LDEuODUtMS40OWgyOC42MmMxLjIsMCwyLjEsMS4xMSwxLjg1LDIuMjhsLTExLjE4LDUyLjUxYy0uMTkuODctLjk2LDEuNS0xLjg1LDEuNWgtMjguNjJjLTEuMiwwLTIuMS0xLjExLTEuODUtMi4yOGwzLjA5LTE0LjQ5Yy4yNS0xLjE4LS42NS0yLjI4LTEuODUtMi4yOGgtMzAuMTVjLS44OSwwLTEuNjYuNjItMS44NSwxLjVsLTMuNDIsMTYuMDdjLS4xOS44Ny0uOTYsMS41LTEuODUsMS41aC0yOC42MmMtMS4yLDAtMi4xLTEuMTEtMS44NS0yLjI4TDEwNC42MSwzLjFjLjE5LS44Ny45Ni0xLjUsMS44NS0xLjVoMjguNjJjMS4yLDAsMi4xLDEuMTEsMS44NSwyLjI4WiIvPgogIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIxMS42LDEuNjFoMjguNjJjMS4yLDAsMi4xLDEuMTEsMS44NSwyLjI4bC0xMS4xOCw1Mi41MWMtLjE5Ljg3LS45NiwxLjUtMS44NSwxLjVoLTI4LjYyYy0xLjIsMC0yLjEtMS4xMS0xLjg1LTIuMjhsMTEuMTgtNTIuNTFjLjE5LS44Ny45Ni0xLjUsMS44NS0xLjVaIi8+CiAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjQyLjIyLDI2LjUzYzEuOTMtOC45LDcuNjMtMTUuNTQsMTcuMTEtMTkuOTQsOS40Ny00LjQsMjIuNjctNi41OSwzOS41OC02LjU5LDkuNjUsMCwxOC4xLjg2LDI1LjM3LDIuNTcsNy4yNiwxLjcyLDEzLDQuMjQsMTcuMjEsNy41OCwzLjQ4LDIuNzYsNS43Myw2LjAxLDYuNzMsOS43NC4zMiwxLjItLjU4LDIuMzktMS44MywyLjM5aC0yOS4wM2MtLjQ3LDAtLjkyLS4xOC0xLjI2LS40OS0xLjQzLTEuMjktMy40My0yLjI3LTYuMDEtMi45NS0yLjg5LS43Ni02LjQzLTEuMTUtMTAuNjEtMS4xNS03LjMyLDAtMTIuODkuODktMTYuNywyLjY3LTMuODIsMS43OC02LjEzLDQuNTYtNi45NCw4LjM0bC0uMzIsMS41M2MtLjE2Ljc1LS4yNCwxLjQ5LS4yNCwyLjIxLDAsMy4wOCwxLjYzLDUuMzUsNC44OCw2Ljc5LDMuMjYsMS40NSw4LjI3LDIuMTcsMTUuMDYsMi4xNyw3LjU2LDAsMTMuMTYtLjc2LDE2LjgtMi4yOC41My0uMjIuMzctMS4wMi0uMjEtMS4wMi00LjMsMC0xMy44NiwwLTE4LjI4LDAtMS4yLDAtMi4xLTEuMTEtMS44NS0yLjI4bDEuODUtOC42OWMuMTktLjg3Ljk2LTEuNSwxLjg1LTEuNWg1MC42NWMxLjIsMCwyLjEsMS4xMSwxLjg1LDIuMjhsLTYuMDMsMjguNDdjLS4xOS44Ny0uOTYsMS41LTEuODUsMS41aC0yMy4wN2MtMS4yLDAtMi4xLTEuMTEtMS44NS0yLjI4bC40Ni0yLjE4Yy4xMS0uNDktLjQ3LS44My0uODYtLjUxLTEuNzMsMS40NC0zLjY1LDIuNi01Ljc0LDMuNS0yLjU5LDEuMTEtNS41NywxLjktOC45NSwyLjM3LTMuMzguNDctNy4zOC43LTEyLjAyLjctOS43MywwLTE4LjA5LS45NC0yNS4wOS0yLjgxcy0xMi4zOC00LjY5LTE2LjE0LTguNDRjLTMuNzctMy43NS01LjY1LTguMzYtNS42NS0xMy44MywwLTEuNjYuMjEtMy41NC42NC01LjYzbC40OC0yLjI1WiIvPgogIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ2NC44OSw0MC4xM2MtMS42LDAtMi43Ny0uMzEtMy41Ny0uOTQtLjgyLS42Ni0xLjI0LTEuNjUtMS4yNC0yLjk2LDAtLjY4LjA4LTEuMzUuMjMtMS45OGwyLjE0LTkuODVjLjMxLTEuNDUuNDctMi44Ni40Ny00LjE3LDAtNi43NS00LjI3LTExLjg1LTEyLjY5LTE1LjE2LTguNTgtMy4zNy0yMS44My01LjA3LTM5LjM3LTUuMDctMTEuODIsMC0yMS42My44MS0yOS4xNSwyLjQtNy40OCwxLjU4LTEzLjQ0LDQuMDgtMTcuNyw3LjQyLTMuMjksMi41Ny01Ljk0LDUuODMtNy45MSw5LjcxLS42NCwxLjI2LjI3LDIuNzUsMS42OCwyLjc1aDMxLjI0Yy41OSwwLDEuMTctLjI2LDEuNTItLjc0LDEuMjItMS42NywzLjEyLTIuODcsNS42NS0zLjU4LDIuOTgtLjgzLDcuMzMtMS4yNSwxMi45NS0xLjI1LDQuNTYsMCw4LjA2LjM2LDEwLjQsMS4wNywyLjU0Ljc3LDMuODMsMS45NiwzLjgzLDMuNTN2LjExYzAsLjUtLjE4LDEuMTctMS4wNiwxLjU4LS41Ni4yNi0xLjQ2LjQ0LTIuNzUuNTZsLTQwLjEyLDIuODljLTYuMzkuNDYtMTEuNzMsMS4yNy0xNS44NywyLjQyLTQuMSwxLjEzLTcuMjgsMi42NS05LjQ1LDQuNDktMi4xNCwxLjgyLTMuNTEsNC4xMS00LjA1LDYuNzlsLS4yMSwxLjA3Yy0uMjEsMS4wNy0uMzEsMi4xMS0uMzEsMy4xMSwwLDUuMDMsMi42NCw4LjcyLDguMDcsMTEuMjksNS40OCwyLjU5LDEzLjc1LDMuOTEsMjQuNTcsMy45MSw5LjU2LDAsMTcuNTYtMS4wMywyMy43OC0zLjA1LDYuMTQtMiwxMC40MS00Ljk1LDEyLjY4LTguNzhoMGMuMjctLjQ1Ljk2LS4yOC45OC4yNGgwYy4xNywzLjUyLDEuNTksNi4wNSw0LjM1LDcuNzMsMi43OSwxLjcxLDcuMTMsMi41NywxMi44OCwyLjU3aDQ4LjI2Yy44OSwwLDEuNjYtLjYyLDEuODUtMS41bDMuMDMtMTQuMzFjLjI1LTEuMTctLjY1LTIuMjgtMS44NS0yLjI4aC0yMy4yN1pNNDIwLjE1LDM2LjVjLTEuMjMsNS4zOC03Ljc0LDguMTEtMTkuMzUsOC4xMS04LjAyLDAtMTEuOTItMS4zMS0xMS45Mi00LjAxLDAtLjI2LjAyLS40NS4wNy0uNjFsLjExLS41M2MuMjItLjg5LDEuMDUtMS42LDIuNDUtMi4wOCwxLjI4LS40NSwzLjI2LS43Nyw2LjA0LS45OWwxOS4xNi0xLjYxYzEuMzktLjEsMi40Mi0uMzcsMy4wNS0uODJoMGMuMzktLjI4LjkyLjA3LjgyLjU1bC0uNDMsMS45OVoiLz4KPC9zdmc+" alt="Thiga">
+        <span class="tg-tdr__eyebrow">Tribe Design · Prep kit</span>
+      </div>
+      <div class="tg-tdr__hero-inner">
+        <h1 class="tg-tdr__display tg-tdr__h1">Share it with<br><em>the Best Tribe!</em></h1>
+        <hr class="tg-tdr__rule">
+        <p class="tg-tdr__lede">You're about to take part in a Tribe ritual and
+          showcase your work to the team! Need a little help building your
+          presentation? We've got you covered.
+          <strong>Claude knows all our rituals by heart</strong>: just copy-paste
+          the prompt you need and answer its questions.</p>
+        <div class="tg-tdr__ctas">
+          <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
+                  data-copy="generic">Copy the starter prompt</button>
+          <a class="tg-tdr__btn tg-tdr__btn--ghost" href="#tg-tdr-rituals"
+             style="text-decoration:none;display:inline-flex;align-items:center">See the 8 rituals</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <section class="tg-tdr__chat" id="tg-tdr-chat">
+    <div class="tg-tdr__wrap">
+      <span class="tg-tdr__eyebrow">Talk to Claude</span>
+      <h2 class="tg-tdr__display tg-tdr__h2">Build it right here</h2>
+      <p class="tg-tdr__section-lede">Pick your ritual below and it lands in the
+        box, or just say what you have. Paste your notes in French or English.
+        You get the .pptx back in this window.</p>
+
+      <div class="tg-tdr__chat-shell">
+        <div class="tg-tdr__log" id="tg-chat-log" role="log" aria-live="polite"
+             aria-label="Conversation with Claude">
+          <p class="tg-tdr__hint" id="tg-chat-hint">Tell Claude which ritual you
+            signed up for and roughly what you want to talk about. Three words a
+            line is enough.</p>
+        </div>
+
+        <div id="tg-chat-gate" class="tg-tdr__gate" hidden>
+          <p>Sign in with your Thiga account to start. Your notes stay in this
+            session and are never shared with the rest of the tribe.</p>
+          <a class="tg-tdr__btn tg-tdr__btn--primary" href="/auth/login"
+             style="text-decoration:none;display:inline-flex;align-items:center">Sign in with Google</a>
+        </div>
+
+        <form class="tg-tdr__composer" id="tg-chat-form" hidden>
+          <label class="tg-tdr__sr" for="tg-chat-input" style="position:absolute;left:-9999px">Your message</label>
+          <textarea id="tg-chat-input" rows="2"
+                    placeholder="I'm doing the T'REX on Wednesday, my mission was at an insurer..."></textarea>
+          <button class="tg-tdr__send" type="submit" id="tg-chat-send">Send</button>
+        </form>
+      </div>
+
+      <div class="tg-tdr__bar">
+        <span id="tg-chat-who"></span>
+        <button type="button" id="tg-chat-reset">Start a new conversation</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-tdr__section tg-tdr__section--pale" id="tg-tdr-how">
+    <div class="tg-tdr__wrap">
+      <span class="tg-tdr__eyebrow">How it works</span>
+      <h2 class="tg-tdr__display tg-tdr__h2">Three steps and you're done</h2>
+      <p class="tg-tdr__section-lede">The one goal behind all of this: nobody should
+        spend more than 45 minutes preparing a 30-minute ritual. If you finish the
+        conversation feeling you still have a deck to build, it failed.</p>
+      <ol class="tg-tdr__steps">
+      <li class="tg-tdr__step" style="--tg-i: 0">
+        <span class="tg-tdr__step-num">01</span>
+        <h3 class="tg-tdr__step-title">You paste the prompt into Claude</h3>
+        <p class="tg-tdr__step-body">Take the one for your ritual from the list below. If you already have notes, a mission brief or meeting minutes, paste them in too, in French or in English: Claude mines them for answers and only asks about what is genuinely missing.</p>
+      </li>
+      <li class="tg-tdr__step" style="--tg-i: 1">
+        <span class="tg-tdr__step-num">02</span>
+        <h3 class="tg-tdr__step-title">It asks five questions, in one block</h3>
+        <p class="tg-tdr__step-body">Never one per message, which is the main reason people give up halfway. Answer in shorthand, three words a line is plenty. Before touching the slides it tells you which angle it's keeping and what it's dropping, so you can object.</p>
+      </li>
+      <li class="tg-tdr__step" style="--tg-i: 2">
+        <span class="tg-tdr__step-num">03</span>
+        <h3 class="tg-tdr__step-title">You get the .pptx and import it into the Drive</h3>
+        <p class="tg-tdr__step-body">The real branded template, filled, with speaker notes that say what to cover out loud and the timing for each slide. What's left is a read-through, your visuals, and dropping the file in the tribe folder.</p>
+      </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="tg-tdr__section tg-tdr__section--dark" id="tg-tdr-rituals">
+    <div class="tg-tdr__wrap">
+      <span class="tg-tdr__eyebrow">The 8 rituals</span>
+      <h2 class="tg-tdr__display tg-tdr__h2">Find yours</h2>
+      <p class="tg-tdr__section-lede">Still undecided? Start from the material you
+        already have on hand: a mission you just left, a tool you just tried, an
+        object you can't stop thinking about, a question you keep arguing about with
+        a colleague.</p>
+      <div class="tg-tdr__explorer">
+        <div class="tg-tdr__cards" id="tg-tdr-cards">
+        <button type="button" class="tg-tdr__card is-active"
+                data-target="tg-tdr-panel-trex" id="tg-tdr-card-trex"
+                aria-expanded="true"
+                aria-controls="tg-tdr-panel-trex"
+                style="--tg-i: 0">
+          <span class="tg-tdr__card-name">T'REX 🦖</span>
+          <span class="tg-tdr__card-kicker">Mission feedback</span>
+          <span class="tg-tdr__card-meta">7 slides</span>
+        </button>
+        <button type="button" class="tg-tdr__card"
+                data-target="tg-tdr-panel-tlab" id="tg-tdr-card-tlab"
+                aria-expanded="false"
+                aria-controls="tg-tdr-panel-tlab"
+                style="--tg-i: 1">
+          <span class="tg-tdr__card-name">T'LAB 🔬</span>
+          <span class="tg-tdr__card-kicker">Tool demo</span>
+          <span class="tg-tdr__card-meta">6 slides</span>
+        </button>
+        <button type="button" class="tg-tdr__card"
+                data-target="tg-tdr-panel-banger" id="tg-tdr-card-banger"
+                aria-expanded="false"
+                aria-controls="tg-tdr-panel-banger"
+                style="--tg-i: 2">
+          <span class="tg-tdr__card-name">That's a Banger 🥇</span>
+          <span class="tg-tdr__card-kicker">Design outside digital</span>
+          <span class="tg-tdr__card-meta">7 slides</span>
+        </button>
+        <button type="button" class="tg-tdr__card"
+                data-target="tg-tdr-panel-passion" id="tg-tdr-card-passion"
+                aria-expanded="false"
+                aria-controls="tg-tdr-panel-passion"
+                style="--tg-i: 3">
+          <span class="tg-tdr__card-name">Passion Fruit 🍍</span>
+          <span class="tg-tdr__card-kicker">A passion, and what it teaches</span>
+          <span class="tg-tdr__card-meta">6 slides</span>
+        </button>
+        <button type="button" class="tg-tdr__card"
+                data-target="tg-tdr-panel-b2b" id="tg-tdr-card-b2b"
+                aria-expanded="false"
+                aria-controls="tg-tdr-panel-b2b"
+                style="--tg-i: 4">
+          <span class="tg-tdr__card-name">Back 2 Back 🕺💃</span>
+          <span class="tg-tdr__card-kicker">Two speakers, one question</span>
+          <span class="tg-tdr__card-meta">7 slides</span>
+        </button>
+        <button type="button" class="tg-tdr__card"
+                data-target="tg-tdr-panel-cmm" id="tg-tdr-card-cmm"
+                aria-expanded="false"
+                aria-controls="tg-tdr-panel-cmm"
+                style="--tg-i: 5">
+          <span class="tg-tdr__card-name">Change My Mind 💬</span>
+          <span class="tg-tdr__card-kicker">A debate on one thesis</span>
+          <span class="tg-tdr__card-meta">5 slides</span>
+        </button>
+        <button type="button" class="tg-tdr__card"
+                data-target="tg-tdr-panel-ama" id="tg-tdr-card-ama"
+                aria-expanded="false"
+                aria-controls="tg-tdr-panel-ama"
+                style="--tg-i: 6">
+          <span class="tg-tdr__card-name">Ask Me Anything 🎤</span>
+          <span class="tg-tdr__card-kicker">External guest</span>
+          <span class="tg-tdr__card-meta">Title + 4 slides</span>
+        </button>
+        <button type="button" class="tg-tdr__card"
+                data-target="tg-tdr-panel-workshop" id="tg-tdr-card-workshop"
+                aria-expanded="false"
+                aria-controls="tg-tdr-panel-workshop"
+                style="--tg-i: 7">
+          <span class="tg-tdr__card-name">Let's Work(shop) 🧰</span>
+          <span class="tg-tdr__card-kicker">Co-animated workshop</span>
+          <span class="tg-tdr__card-meta">8 slides</span>
+        </button>
+        </div>
+        <div class="tg-tdr__panels">
+      <div class="tg-tdr__panel is-active"
+           id="tg-tdr-panel-trex" role="region"
+           aria-labelledby="tg-tdr-card-trex">
+        <p class="tg-tdr__panel-kicker">Remote, 30 min · 7 slides · 18 min talking, 10 min questions</p>
+        <h3 class="tg-tdr__panel-title">T'REX 🦖</h3>
+        <p class="tg-tdr__panel-promise">A slice of a mission, or the whole mission: the context, the problem you hit, the approach you took, and what it changed for the client and for you.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>Telling the mission in chronological order. Six months never fit into 18 minutes, and the good part ends up squeezed onto the last slide.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>The client in one line, and how design-mature they were</li><li>What you were asked for, what was really going on, and how you found out</li><li>Your 2 or 3 moves, and the artefact you can show for each one</li><li>What changed: a decision, a habit, a metric if you have one</li><li>What you'd do differently, concrete enough for a colleague to apply on Monday</li></ol>
+        
+        <button type="button" class="tg-tdr__copy" data-copy="trex">
+          <span class="tg-tdr__copy-label">Copy the T'REX 🦖 prompt</span>
+        </button>
+      </div>
+      <div class="tg-tdr__panel"
+           id="tg-tdr-panel-tlab" role="region"
+           aria-labelledby="tg-tdr-card-tlab" hidden>
+        <p class="tg-tdr__panel-kicker">Remote, 30 min · 6 slides · 12 min of live demo, the rest around it</p>
+        <h3 class="tg-tdr__panel-title">T'LAB 🔬</h3>
+        <p class="tg-tdr__panel-promise">AI tooling, craft, a tool you found recently. Hands-on enough that the room can go and redo it themselves.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>Replaying the vendor demo. Everyone can watch the marketing video on their own time. The value sits in running the tool on something you actually had to deliver.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>Which real task you pointed it at, and the before / after in minutes</li><li>Price, access, and what the tool does with your data (saying what you don't know counts as an answer)</li><li>The three steps of your demo</li><li>Two places where it falls apart, bluntly</li><li>The prompt or config you actually used</li></ol>
+        
+        <button type="button" class="tg-tdr__copy" data-copy="tlab">
+          <span class="tg-tdr__copy-label">Copy the T'LAB 🔬 prompt</span>
+        </button>
+      </div>
+      <div class="tg-tdr__panel"
+           id="tg-tdr-panel-banger" role="region"
+           aria-labelledby="tg-tdr-card-banger" hidden>
+        <p class="tg-tdr__panel-kicker">Remote, 30 min · 7 slides · Two decisions decoded, not four name-dropped</p>
+        <h3 class="tg-tdr__panel-title">That's a Banger 🥇</h3>
+        <p class="tg-tdr__panel-promise">A short exposé on design that has nothing to do with our screens, so we can pinch ideas from other domains and from people working under very different constraints.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>The Wikipedia summary. Dates and a timeline are not a banger. What works: two deliberate decisions, the option that got rejected, and the constraint that forced the call.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>The object, and your personal hook: why this one</li><li>Who made it, when, and under what constraint</li><li>Two deliberate decisions, with the rejected option each time</li><li>The detail nobody notices, the one you'd zoom into</li><li>What we can pinch, translated into something concrete on a product</li></ol>
+        
+        <button type="button" class="tg-tdr__copy" data-copy="banger">
+          <span class="tg-tdr__copy-label">Copy the That's a Banger 🥇 prompt</span>
+        </button>
+      </div>
+      <div class="tg-tdr__panel"
+           id="tg-tdr-panel-passion" role="region"
+           aria-labelledby="tg-tdr-card-passion" hidden>
+        <p class="tg-tdr__panel-kicker">Remote, 30 min · 6 slides · The most relaxed slot of the month</p>
+        <h3 class="tg-tdr__panel-title">Passion Fruit 🍍</h3>
+        <p class="tg-tdr__panel-promise">You talk about something you love, what it quietly taught you as a designer, and the tribe gets to know you a bit better along the way. No need to be an expert.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>Forcing the parallel. If the passion is bread and the conclusion is that it taught you agile, everybody can tell. Two honest bridges beat three invented ones.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>The passion in three words, and how you got into it</li><li>The mechanism outsiders never get to see</li><li>Two or three things it taught you, anchored in something you did last month</li><li>What you can show: photos, a short video, an object held up to camera</li><li>How somebody would start this weekend</li></ol>
+        
+        <button type="button" class="tg-tdr__copy" data-copy="passion">
+          <span class="tg-tdr__copy-label">Copy the Passion Fruit 🍍 prompt</span>
+        </button>
+      </div>
+      <div class="tg-tdr__panel"
+           id="tg-tdr-panel-b2b" role="region"
+           aria-labelledby="tg-tdr-card-b2b" hidden>
+        <p class="tg-tdr__panel-kicker">Remote, 30 min · 7 slides · Two consultants, a single question</p>
+        <h3 class="tg-tdr__panel-title">Back 2 Back 🕺💃</h3>
+        <p class="tg-tdr__panel-promise">Two people answer the same question about their missions, side by side, to see how much the context changes the answer.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>Smoothing both answers into one tidy narrative. The friction is the subject of the session. Where you disagree, that goes on the slide.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>The question you're both answering</li><li>Your context lines: client, sector, scope, design maturity, team, how long you've been there, tooling</li><li>Your answer in one sentence, filled in separately from your partner's</li><li>Where it's stuck and what's working, two of each</li><li>Reading the other answer: the one thing you'd pinch</li></ol>
+        
+        <button type="button" class="tg-tdr__copy" data-copy="b2b">
+          <span class="tg-tdr__copy-label">Copy the Back 2 Back 🕺💃 prompt</span>
+        </button>
+      </div>
+      <div class="tg-tdr__panel"
+           id="tg-tdr-panel-cmm" role="region"
+           aria-labelledby="tg-tdr-card-cmm" hidden>
+        <p class="tg-tdr__panel-kicker">Remote, 30 min · 5 slides · 12 min of case, 18 min of debate</p>
+        <h3 class="tg-tdr__panel-title">Change My Mind 💬</h3>
+        <p class="tg-tdr__panel-promise">You come with a statement you actually believe, you make the case, and you spend the rest of the slot being argued with. Responsible AI, accessibility, gender equality in product design, where the line sits between PM and designer.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>Picking a thesis nobody will contest. &quot;Accessibility matters&quot; gets nods and silence. A debate needs a claim with a cost attached, one you'd still defend in a room where half the people work differently.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>The statement, in one sentence, as a claim rather than a topic</li><li>Why it's worth arguing about now</li><li>Your two arguments, and what you saw that made you believe each one</li><li>The strongest argument against you, stated the way its defenders would state it</li><li>Who in the tribe you expect to disagree, and what they'll say</li></ol>
+        <p class="tg-tdr__panel-extra">Turning a subject into a claim is the part Claude works hardest on: it comes back with two or three sharpened phrasings of your thesis and you pick. On subjects that touch identity, it steers the claim toward a practice rather than toward people, and says why.</p>
+        <button type="button" class="tg-tdr__copy" data-copy="cmm">
+          <span class="tg-tdr__copy-label">Copy the Change My Mind 💬 prompt</span>
+        </button>
+      </div>
+      <div class="tg-tdr__panel"
+           id="tg-tdr-panel-ama" role="region"
+           aria-labelledby="tg-tdr-card-ama" hidden>
+        <p class="tg-tdr__panel-kicker">In person, 60 min · Title + 4 slides · 20 min of guest, 30 min of questions</p>
+        <h3 class="tg-tdr__panel-title">Ask Me Anything 🎤</h3>
+        <p class="tg-tdr__panel-promise">Someone from outside Thiga comes to talk: a sector we never see (games, furniture, fashion, a startup) or a craft we don't have in house.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>Letting it drift into a fifty-minute talk with five rushed minutes at the end. The name of the ritual is a clue.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>Who the guest is, what they've built, and why them now</li><li>What came out of your prep call, including what's off-limits and whether we can record</li><li>The surprising thing you learned that isn't on their LinkedIn</li><li>Which themes the tribe wants to hear them on</li><li>Who keeps time, and it shouldn't be you</li></ol>
+        <p class="tg-tdr__panel-extra">On top of the deck, Claude hands you the bank of 12 questions split across four buckets, and the question-collection message to post in the tribe's Slack a week ahead.</p>
+        <button type="button" class="tg-tdr__copy" data-copy="ama">
+          <span class="tg-tdr__copy-label">Copy the Ask Me Anything 🎤 prompt</span>
+        </button>
+      </div>
+      <div class="tg-tdr__panel"
+           id="tg-tdr-panel-workshop" role="region"
+           aria-labelledby="tg-tdr-card-workshop" hidden>
+        <p class="tg-tdr__panel-kicker">In person, 60 min · 8 slides · Co-animated with a thematic Tribe</p>
+        <h3 class="tg-tdr__panel-title">Let's Work(shop) 🧰</h3>
+        <p class="tg-tdr__panel-promise">A workshop on something this Tribe, or Thiga, genuinely needs moved forward. One exercise, one output.</p>
+        <div class="tg-tdr__trap">
+          <span class="tg-tdr__trap-label">The trap</span>
+          <p>Cramming in three exercises. And the quieter trap: an output nobody owns. A pleasant hour that evaporates, and that is exactly what makes people stop signing up.</p>
+        </div>
+        <p class="tg-tdr__panel-sub">What Claude will ask you</p>
+        <ol class="tg-tdr__asks"><li>What precise output people walk out holding, in one sentence</li><li>Which thematic Tribe, and which objective it serves</li><li>The question the room works on</li><li>Who owns the output afterwards, and where it lands</li><li>How many tables you expect, and the real time slot</li></ol>
+        <p class="tg-tdr__panel-extra">Claude runs the interview backwards: the output first, then who owns it, then the exercise, then the framing, and only then the slides.</p>
+        <button type="button" class="tg-tdr__copy" data-copy="workshop">
+          <span class="tg-tdr__copy-label">Copy the Let's Work(shop) 🧰 prompt</span>
+        </button>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-tdr__section" id="tg-tdr-guards">
+    <div class="tg-tdr__wrap">
+      <span class="tg-tdr__eyebrow">The guardrails</span>
+      <h2 class="tg-tdr__display tg-tdr__h2">What Claude won't do</h2>
+      <p class="tg-tdr__section-lede">A mission feedback deck travels to colleagues
+        who work at other clients. These four rules live inside the skill, they are
+        not negotiated case by case.</p>
+      <ul class="tg-tdr__guards">
+      <li class="tg-tdr__guard" style="--tg-i: 0">
+        <h3 class="tg-tdr__guard-title">No invented numbers</h3>
+        <p>No metric, client name, quote or result that you didn't give. When a figure is missing, the slide shows [your number here] and Claude says so out loud. A decorative percentage in a mission feedback is a client-trust incident, not a typo.</p>
+      </li>
+      <li class="tg-tdr__guard" style="--tg-i: 1">
+        <h3 class="tg-tdr__guard-title">Client anonymised by default</h3>
+        <p>&quot;A French insurance group, 12,000 people&quot; does the job. User data and names blurred in screenshots, relative metrics rather than absolute ones, and never a link to a client Figma or Miro: a screenshot instead.</p>
+      </li>
+      <li class="tg-tdr__guard" style="--tg-i: 2">
+        <h3 class="tg-tdr__guard-title">Write in French or English, the deck comes out in English</h3>
+        <p>Claude follows whatever language you write in, and it reads a French brief as happily as an English one. Paste your notes as they are, no need to translate anything first. The deck itself is always in English, like every deck in the tribe.</p>
+      </li>
+      <li class="tg-tdr__guard" style="--tg-i: 3">
+        <h3 class="tg-tdr__guard-title">The slide ceiling is a ceiling</h3>
+        <p>Seven slides for a T'REX means seven, not eight. More slides is not more generous, it's a longer meeting. The READ ME slide and the TIP boxes are stripped from the deliverable.</p>
+      </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="tg-tdr__section tg-tdr__section--pale" id="tg-tdr-start">
+    <div class="tg-tdr__wrap">
+      <span class="tg-tdr__eyebrow">Getting started</span>
+      <h2 class="tg-tdr__display tg-tdr__h2">The starter prompt</h2>
+      <p class="tg-tdr__section-lede">The one that works when you haven't picked a
+        ritual yet. For a specific ritual, grab its prompt from the list above.</p>
+      <div class="tg-tdr__start">
+        <div>
+          <div class="tg-tdr__pre" id="tg-tdr-generic"></div>
+          <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
+                  data-copy="generic" style="margin-top:var(--s-sm)">Copy this prompt</button>
+        </div>
+        <aside class="tg-tdr__aside">
+          <h3>Before your first run</h3>
+          <p>The <b>tribe-design-rituals</b> skill has to be installed on your Claude
+            account. Camille sends you the file, one click on "Save" is enough.
+            Without it, Claude improvises a deck that won't be on brand.</p>
+          <h3>Answer in whichever language</h3>
+          <p>French or English, and you can switch mid-conversation. Paste a French
+            mission brief as it is. The deck always comes out in English.</p>
+          <h3>Where the deck lands</h3>
+          <p>Download the .pptx and drop it in the tribe folder, named after the
+            ritual and the date.</p>
+          <span class="tg-tdr__drive">Thiga Drive / Tribe Design / Rituals / [year]</span>
+          <h3>What stays with you</h3>
+          <p>Dropping your visuals into the dashed zones, filling the brackets
+            Claude left standing, blurring screenshots, and a read-through.
+            Your name is on it.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <footer class="tg-tdr__footer">
+    <div class="tg-tdr__wrap tg-tdr__footer-inner">
+      <img class="tg-tdr__footer-sym" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTG9nbyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNDA1LjA0IDMwMCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2U2ZGVmYTsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMCw2LjI1djk4LjA5YzAsMy40NSwyLjgsNi4yNSw2LjI1LDYuMjVoNjMuOWMxLjQxLDAsMi43OS0uNDgsMy44OS0xLjM2TDE5OC42Myw5LjkzYzIuMjgtMS44Miw1LjUxLTEuODIsNy43OSwwbDEyNC41OSw5OS4zYzEuMTEuODgsMi40OCwxLjM2LDMuODksMS4zNmg2My45YzMuNDUsMCw2LjI1LTIuOCw2LjI1LTYuMjVWNi4yNWMwLTMuNDUtMi44LTYuMjUtNi4yNS02LjI1SDYuMjVDMi44LDAsMCwyLjgsMCw2LjI1WiIvPgogIDxyZWN0IGNsYXNzPSJjbHMtMSIgeD0iMTQ3LjIzIiB5PSIxMTAuMzQiIHdpZHRoPSIxMTAuNTgiIGhlaWdodD0iMTg5LjY2IiByeD0iNi4yNSIgcnk9IjYuMjUiLz4KPC9zdmc+" alt="Thiga">
+      <p>One ritual a week, more than forty consultants, signing up is voluntary.
+        A question about a format, or an urge to change something: that happens in
+        the tribe's Slack channel.</p>
+      <p><a href="https://www.thiga.co">thiga.co</a></p>
+    </div>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var root = document.querySelector('.tg-tdr');
+  if (!root) return;
+  if (window.hsInEditor) return;
+
+  var PROMPTS = {"trex": "I'm preparing my T'REX 🦖 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","tlab": "I'm preparing my T'LAB 🔬 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","banger": "I'm preparing my That's a Banger 🥇 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","passion": "I'm preparing my Passion Fruit 🍍 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","b2b": "I'm preparing my Back 2 Back 🕺💃 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","cmm": "I'm preparing my Change My Mind 💬 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","ama": "I'm preparing my Ask Me Anything 🎤 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","workshop": "I'm preparing my Let's Work(shop) 🧰 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.", "generic": "I signed up for a Tribe Design slot and I need to prepare my ritual.\n\n[Say which one if you know: T'REX, T'LAB, That's a Banger, Passion Fruit, Back 2 Back, Change My Mind, Ask Me Anything, Let's Work(shop). Otherwise describe what you have on hand and we'll pick together.]\n\nHere's my material: [paste your notes, your brief, meeting minutes. French or English, both work.]\n\nHelp me find the angle, then give me the filled .pptx."};
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isTouch = window.matchMedia('(hover: none)').matches;
+
+  /* ---------------- apparition au scroll (stagger fade-up, une seule fois) */
+  var zones = ['#tg-tdr-how', '#tg-tdr-rituals', '#tg-tdr-guards'];
+  zones.forEach(function (sel) {
+    var el = root.querySelector(sel);
+    if (!el) return;
+    if (reduced || !('IntersectionObserver' in window)) {
+      el.classList.add('is-revealed');
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-revealed');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+    obs.observe(el);
+  });
+
+  /* ---------------- explorateur de rituels (hover-reveal approfondissement) */
+  var cards = Array.prototype.slice.call(root.querySelectorAll('.tg-tdr__card'));
+  var panels = Array.prototype.slice.call(root.querySelectorAll('.tg-tdr__panel'));
+
+  function show(id) {
+    cards.forEach(function (c) {
+      var on = c.getAttribute('data-target') === id;
+      c.classList.toggle('is-active', on);
+      c.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    panels.forEach(function (p) {
+      var on = p.id === id;
+      p.classList.toggle('is-active', on);
+      if (on) { p.removeAttribute('hidden'); } else { p.setAttribute('hidden', ''); }
+    });
+  }
+
+  cards.forEach(function (card, i) {
+    var id = card.getAttribute('data-target');
+    if (!isTouch) {
+      card.addEventListener('mouseenter', function () { show(id); });
+      card.addEventListener('focus', function () { show(id); });
+    }
+    card.addEventListener('click', function (e) {
+      e.preventDefault();
+      show(id);
+      if (isTouch) {
+        var p = document.getElementById(id);
+        if (p) p.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      }
+    });
+    card.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowDown') next = cards[(i + 1) % cards.length];
+      if (e.key === 'ArrowUp') next = cards[(i - 1 + cards.length) % cards.length];
+      if (next) { e.preventDefault(); next.focus(); }
+    });
+  });
+
+  /* ---------------- copie des prompts */
+  var pre = document.getElementById('tg-tdr-generic');
+  if (pre) pre.textContent = PROMPTS.generic;
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+
+  root.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    var text = PROMPTS[btn.getAttribute('data-copy')];
+    if (!text) return;
+    var label = btn.querySelector('.tg-tdr__copy-label') || btn;
+    var original = label.textContent;
+
+    function done() {
+      label.textContent = 'Copied, paste it into Claude';
+      btn.classList.add('is-done');
+      window.setTimeout(function () {
+        label.textContent = original;
+        btn.classList.remove('is-done');
+      }, 2400);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {
+        fallbackCopy(text); done();
+      });
+    } else {
+      fallbackCopy(text); done();
+    }
+  });
+})();
+</script>
+<script>window.__TG_PROMPTS = {"trex": "I'm preparing my T'REX 🦖 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","tlab": "I'm preparing my T'LAB 🔬 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","banger": "I'm preparing my That's a Banger 🥇 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","passion": "I'm preparing my Passion Fruit 🍍 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","b2b": "I'm preparing my Back 2 Back 🕺💃 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","cmm": "I'm preparing my Change My Mind 💬 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","ama": "I'm preparing my Ask Me Anything 🎤 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.","workshop": "I'm preparing my Let's Work(shop) 🧰 for the Tribe Design ritual on [your date].\n\nHere's my material: [paste your notes, your mission brief, meeting minutes. French or English, both work. Or just describe the thing in three lines if you have nothing written down.]\n\nHelp me find the angle, ask me your questions, then fill the template and give me the .pptx.", "generic": "I signed up for a Tribe Design slot and I need to prepare my ritual.\n\n[Say which one if you know: T'REX, T'LAB, That's a Banger, Passion Fruit, Back 2 Back, Change My Mind, Ask Me Anything, Let's Work(shop). Otherwise describe what you have on hand and we'll pick together.]\n\nHere's my material: [paste your notes, your brief, meeting minutes. French or English, both work.]\n\nHelp me find the angle, then give me the filled .pptx."};</script>
+
+<script>
+(function () {
+  var log = document.getElementById('tg-chat-log');
+  var form = document.getElementById('tg-chat-form');
+  var gate = document.getElementById('tg-chat-gate');
+  var input = document.getElementById('tg-chat-input');
+  var send = document.getElementById('tg-chat-send');
+  var hint = document.getElementById('tg-chat-hint');
+  var who = document.getElementById('tg-chat-who');
+  var resetBtn = document.getElementById('tg-chat-reset');
+  if (!log || !form) return;
+
+  var driveEnabled = false;
+  var busyEl = null;
+  var streamEl = null;
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function scroll() { log.scrollTop = log.scrollHeight; }
+
+  function addMine(text) {
+    if (hint) { hint.remove(); hint = null; }
+    var w = el('div', 'tg-tdr__msg tg-tdr__msg--me');
+    w.appendChild(el('span', 'tg-tdr__who', 'You'));
+    w.appendChild(document.createTextNode(text));
+    log.appendChild(w); scroll();
+  }
+
+  function startClaude() {
+    var w = el('div', 'tg-tdr__msg tg-tdr__msg--claude');
+    w.appendChild(el('span', 'tg-tdr__who', 'Claude'));
+    var body = el('span');
+    w.appendChild(body);
+    log.appendChild(w); scroll();
+    return body;
+  }
+
+  function setBusy(label) {
+    clearBusy();
+    busyEl = el('div', 'tg-tdr__busy');
+    busyEl.appendChild(el('span')); busyEl.appendChild(el('span')); busyEl.appendChild(el('span'));
+    busyEl.appendChild(el('em', null, label));
+    log.appendChild(busyEl); scroll();
+  }
+  function clearBusy() { if (busyEl) { busyEl.remove(); busyEl = null; } }
+
+  var TOOL_LABEL = {
+    Bash: 'building the deck', Write: 'writing', Read: 'reading your notes',
+    Edit: 'editing', Glob: 'looking around', Grep: 'searching',
+    Skill: 'opening the ritual playbook'
+  };
+
+  function addDeck(name) {
+    var card = el('div', 'tg-tdr__deck');
+    card.appendChild(el('span', 'tg-tdr__deck-name', name));
+    card.appendChild(el('p', 'tg-tdr__deck-todo',
+      'Left for you: drop your visuals in the dashed zones, fill any [brackets], blur screenshots, and read it through.'));
+    var acts = el('div', 'tg-tdr__deck-acts');
+
+    var dl = el('a', 'tg-tdr__mini', 'Download');
+    dl.href = '/api/deck/' + encodeURIComponent(name);
+    dl.setAttribute('download', name);
+    acts.appendChild(dl);
+
+    if (driveEnabled) {
+      var toDrive = el('button', 'tg-tdr__mini tg-tdr__mini--ghost', 'Send to the tribe Drive');
+      toDrive.type = 'button';
+      toDrive.addEventListener('click', function () {
+        toDrive.disabled = true;
+        toDrive.textContent = 'Sending...';
+        fetch('/api/drive/' + encodeURIComponent(name), { method: 'POST' })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) {
+            if (!res.ok) throw new Error(res.j.detail || 'failed');
+            toDrive.textContent = 'In the Drive';
+            if (res.j.link) {
+              var open = el('a', 'tg-tdr__mini tg-tdr__mini--ghost', 'Open in Drive');
+              open.href = res.j.link; open.target = '_blank'; open.rel = 'noopener';
+              acts.appendChild(open);
+            }
+          })
+          .catch(function (e) {
+            toDrive.disabled = false;
+            toDrive.textContent = 'Drive failed, retry';
+            console.error('[prep-kit] drive upload failed', e);
+          });
+      });
+      acts.appendChild(toDrive);
+    }
+    card.appendChild(acts);
+    log.appendChild(card); scroll();
+  }
+
+  function addError(text) {
+    var w = el('div', 'tg-tdr__msg tg-tdr__msg--claude');
+    w.appendChild(el('span', 'tg-tdr__who', 'Something broke'));
+    w.appendChild(document.createTextNode(text));
+    log.appendChild(w); scroll();
+  }
+
+  function lock(on) {
+    send.disabled = on;
+    input.disabled = on;
+    send.textContent = on ? 'Working' : 'Send';
+  }
+
+  function handle(ev) {
+    if (ev.type === 'text') {
+      clearBusy();
+      if (!streamEl) streamEl = startClaude();
+      streamEl.textContent += ev.text;
+      scroll();
+    } else if (ev.type === 'tool') {
+      setBusy('Claude is ' + (TOOL_LABEL[ev.name] || 'working') + '...');
+    } else if (ev.type === 'deck') {
+      clearBusy(); addDeck(ev.name);
+    } else if (ev.type === 'session' && ev.session) {
+      fetch('/api/session', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session: ev.session })
+      });
+    } else if (ev.type === 'error') {
+      clearBusy(); addError(ev.message);
+    }
+  }
+
+  async function ask(text) {
+    addMine(text);
+    streamEl = null;
+    lock(true);
+    setBusy('Claude is reading');
+    try {
+      var res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+      if (res.status === 401) { location.href = '/auth/login'; return; }
+      if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
+
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, { stream: true });
+        var parts = buffer.split('\n\n');
+        buffer = parts.pop();
+        parts.forEach(function (part) {
+          var line = part.replace(/^data: /, '').trim();
+          if (!line) return;
+          try { handle(JSON.parse(line)); } catch (e) { console.warn('[prep-kit] bad event', line); }
+        });
+      }
+    } catch (e) {
+      addError(String(e.message || e));
+    } finally {
+      clearBusy();
+      lock(false);
+      input.focus();
+    }
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.style.height = '';
+    ask(text);
+  });
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault(); form.requestSubmit();
+    }
+  });
+  input.addEventListener('input', function () {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 220) + 'px';
+  });
+
+  resetBtn.addEventListener('click', function () {
+    fetch('/api/reset', { method: 'POST' }).then(function () { location.reload(); });
+  });
+
+  /* Les boutons de la V1 remplissent la boîte au lieu de copier : en V2 il n'y
+     a plus besoin d'aller coller le prompt ailleurs. */
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    var label = btn.querySelector('.tg-tdr__copy-label') || btn;
+    if (/^Copy the /.test(label.textContent)) {
+      label.textContent = label.textContent.replace(/^Copy the /, 'Prepare my ').replace(/ prompt$/, '');
+    } else if (/starter prompt|this prompt/.test(label.textContent)) {
+      label.textContent = 'Start in the chat';
+    }
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var key = btn.getAttribute('data-copy');
+      var prompt = (window.__TG_PROMPTS || {})[key];
+      if (!prompt) return;
+      input.value = prompt;
+      document.getElementById('tg-tdr-chat').scrollIntoView({ block: 'start' });
+      input.focus();
+      input.dispatchEvent(new Event('input'));
+    }, true);
+  });
+
+  fetch('/api/config').then(function (r) { return r.json(); }).then(function (cfg) {
+    driveEnabled = !!cfg.drive_enabled;
+    if (cfg.user) {
+      form.hidden = false; gate.hidden = true;
+      who.textContent = 'Signed in as ' + cfg.user.name;
+      if (!cfg.auth_disabled) {
+        who.textContent += ' \u00b7 ';
+        var out = el('a', null, 'sign out');
+        out.href = '/auth/logout';
+        out.style.color = 'inherit';
+        who.appendChild(out);
+      }
+    } else {
+      form.hidden = true; gate.hidden = false;
+    }
+  }).catch(function () { form.hidden = true; gate.hidden = false; });
+})();
+</script>
+</body>
+</html>

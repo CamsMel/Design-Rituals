@@ -1,0 +1,22 @@
+# Secrets. Aucun de ces fichiers ne doit partir dans un commit.
+.env
+.env.*
+!.env.example
+*service-account*.json
+*credentials*.json
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local
+/data/
+chat.png
+*.pptx
+!skill/assets/templates/*.pptx
+
+# État interne Claude Code, pas du code projet
+.claude/

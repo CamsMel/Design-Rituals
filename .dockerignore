@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.env
+chat.png
+build_app_page.py
