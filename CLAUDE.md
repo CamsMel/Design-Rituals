@@ -80,12 +80,14 @@ Concrètement :
   consultant) ont été supprimés avec la section ; une partie recoupait déjà
   "How it works", le reste (le dossier Drive, "what stays with you") n'est
   nulle part ailleurs sur la page pour l'instant.
-- **Des photos de l'équipe animation restent à intégrer** : dans le hero (à
-  droite) et en clôture de page, juste avant le footer (`<div
-  class="tg-tdr__team-photo">`, actuellement un conteneur vide avec un
-  commentaire TODO). En attente des fichiers image ; la convention du fichier
-  est d'inliner les images en base64 (voir le logo Thiga), pas de fichiers
-  séparés à héberger.
+- **Photos de l'équipe intégrées le 2026-08-21** : deux dans le hero
+  (`.tg-tdr__hero-photos`, cachées sous 960px pour ne pas écraser le texte),
+  une en clôture de page avant le footer (`.tg-tdr__team-photo`). Redimensionnées
+  et compressées avec Pillow/pngquant avant d'inliner en base64 (les fichiers
+  reçus faisaient ~1,1 Mo cumulés, les versions inlinées ~235 Ko) — toujours
+  garder l'alpha (PNG/WebP, jamais JPEG) : les découpes ovales/arrondies sont
+  de la vraie transparence, pas juste une bordure visuelle. Les fichiers
+  sources originaux ne sont pas commités (déjà inlinés, inutile de dupliquer).
 - **La copy de la page (`index.html`) a été remise à jour le 2026-08-21**
   pour refléter le parcours à 7 étapes de la skill : "How it works" est
   passé à 4 étapes (installation automatique, interview + recherche
