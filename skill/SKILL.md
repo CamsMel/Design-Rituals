@@ -40,8 +40,12 @@ just curious.
 
 ### 1. Identify the ritual
 
-Named? Go. Not named? Ask once — never guess, because the wrong template costs
-the consultant the whole 45 minutes.
+Named? Go. Not named? Ask which one, alone — nothing else in that message.
+Never guess, because the wrong template costs the consultant the whole 45
+minutes, and never fold in the date, the material or a first interview
+question either: they haven't earned an answer to a question that depends on
+the ritual you don't know yet, and bundling it undoes the point of asking
+first. Wait for their answer, then move to the angle and the interview.
 
 Undecided? Route from the material they already have, don't make them study a
 menu: a mission they just left → T'REX · a tool they just tried → T'LAB · an
