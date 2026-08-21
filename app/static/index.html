@@ -96,6 +96,31 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
 }
 .tg-tdr__btn--ghost:hover { border-color: var(--tg-violet-light); }
 
+/* ------------------------------------------------------- ritual picker */
+.tg-tdr__picker { position: relative; }
+.tg-tdr__picker-btn,
+#tg-tdr-picker-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.tg-tdr__picker-caret { font-size: 11px; transition: transform 160ms ease-out; }
+#tg-tdr-picker-btn[aria-expanded="true"] .tg-tdr__picker-caret { transform: rotate(180deg); }
+.tg-tdr__picker-menu {
+  position: absolute; top: calc(100% + 8px); left: 0; z-index: 20;
+  min-width: 240px; margin: 0; padding: 6px; list-style: none;
+  background: var(--tg-russian-violet); border: 1px solid rgba(230,222,250,.28);
+  border-radius: var(--tg-r); box-shadow: 0 12px 32px rgba(0,0,0,.35);
+}
+.tg-tdr__picker-menu li { display: block; }
+.tg-tdr__picker-menu button {
+  display: block; width: 100%; text-align: left; background: none; border: 0;
+  color: var(--tg-white); font-family: 'Inter', sans-serif; font-size: 15px;
+  padding: 11px 12px; border-radius: 8px; cursor: pointer; min-height: 44px;
+}
+.tg-tdr__picker-menu button:hover,
+.tg-tdr__picker-menu button:focus-visible {
+  background: rgba(230,222,250,.12); outline: none;
+}
+
 /* ---------------------------------------------------------------- sections */
 .tg-tdr__section { padding: var(--s-3xl) 0; }
 .tg-tdr__section--pale { background: var(--tg-violet-pale); }
@@ -237,36 +262,6 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
 }
 .tg-tdr__guard p { font-size: 15px; margin-top: 6px; }
 
-/* start block */
-.tg-tdr__start {
-  display: grid; grid-template-columns: 1.15fr .85fr; gap: var(--s-lg);
-  margin-top: var(--s-xl); align-items: start;
-}
-.tg-tdr__pre {
-  background: var(--tg-russian-violet); color: var(--tg-lavender);
-  border-radius: var(--tg-r); padding: var(--s-md);
-  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
-  font-size: 13.5px; line-height: 1.65; white-space: pre-wrap;
-  word-break: break-word;
-}
-.tg-tdr__pre b { color: var(--tg-violet-light); font-weight: 400; }
-.tg-tdr__aside {
-  background: var(--tg-white); border: 1px solid var(--tg-lavender);
-  border-radius: var(--tg-r); padding: var(--s-md);
-}
-.tg-tdr__aside h3 {
-  font-family: 'Kanit', sans-serif; font-weight: 800; font-size: 16px;
-  text-transform: uppercase;
-}
-.tg-tdr__aside p { font-size: 14.5px; margin-top: var(--s-xs); }
-.tg-tdr__aside p + h3, .tg-tdr__aside .tg-tdr__drive + h3 { margin-top: var(--s-md); }
-.tg-tdr__drive {
-  display: inline-block; margin-top: var(--s-sm); font-size: 13px;
-  font-family: ui-monospace, Menlo, monospace; padding: 7px 11px;
-  background: var(--tg-violet-pale); border-radius: var(--tg-r);
-  color: var(--tg-russian-violet);
-}
-
 /* footer */
 .tg-tdr__footer {
   background: var(--tg-russian-violet); color: var(--tg-lavender);
@@ -292,7 +287,7 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
 .tg-tdr__card:hover { transition-delay: 0ms; }
 
 @media (max-width: 860px) {
-  .tg-tdr__explorer, .tg-tdr__start,
+  .tg-tdr__explorer,
   .tg-tdr__guards { grid-template-columns: minmax(0, 1fr); }
   .tg-tdr__hero { padding-top: var(--s-lg); }
   .tg-tdr__brandbar { margin-bottom: var(--s-xl); }
@@ -484,10 +479,27 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
           Questions, research if you need it, a plan to review, then the
           deck.</p>
         <div class="tg-tdr__ctas">
-          <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
-                  data-copy="generic">Copy the starter prompt</button>
+          <div class="tg-tdr__picker">
+            <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
+                    id="tg-tdr-picker-btn" aria-haspopup="listbox"
+                    aria-expanded="false" aria-controls="tg-tdr-picker-menu">
+              <span id="tg-tdr-picker-label">Copy your ritual's prompt</span>
+              <span class="tg-tdr__picker-caret" aria-hidden="true">&#9662;</span>
+            </button>
+            <ul class="tg-tdr__picker-menu" id="tg-tdr-picker-menu"
+                role="listbox" aria-label="Choose your ritual" hidden>
+              <li role="option"><button type="button" data-ritual="trex">T'REX 🦖</button></li>
+              <li role="option"><button type="button" data-ritual="tlab">T'LAB 🔬</button></li>
+              <li role="option"><button type="button" data-ritual="banger">That's a Banger 🥇</button></li>
+              <li role="option"><button type="button" data-ritual="passion">Passion Fruit 🍍</button></li>
+              <li role="option"><button type="button" data-ritual="b2b">Back 2 Back 🕺💃</button></li>
+              <li role="option"><button type="button" data-ritual="cmm">Change My Mind 💬</button></li>
+              <li role="option"><button type="button" data-ritual="ama">Ask Me Anything 🎤</button></li>
+              <li role="option"><button type="button" data-ritual="workshop">Let's Work(shop) 🧰</button></li>
+            </ul>
+          </div>
           <a class="tg-tdr__btn tg-tdr__btn--ghost" href="#tg-tdr-rituals"
-             style="text-decoration:none;display:inline-flex;align-items:center">See the 8 rituals</a>
+             style="text-decoration:none;display:inline-flex;align-items:center">Explore all rituals</a>
         </div>
       </div>
     </div>
@@ -826,38 +838,22 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
 
   <section class="tg-tdr__section tg-tdr__section--pale" id="tg-tdr-start">
     <div class="tg-tdr__wrap">
-      <span class="tg-tdr__eyebrow">Getting started</span>
-      <h2 class="tg-tdr__display tg-tdr__h2">The starter prompt</h2>
-      <p class="tg-tdr__section-lede">The one that works when you haven't picked a
-        ritual yet. For a specific ritual, grab its prompt from the list above.</p>
-      <div class="tg-tdr__start">
-        <div>
-          <div class="tg-tdr__pre" id="tg-tdr-generic"></div>
-          <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
-                  data-copy="generic" style="margin-top:var(--s-sm)">Copy this prompt</button>
-        </div>
-        <aside class="tg-tdr__aside">
-          <h3>Before your first run</h3>
-          <p>Use <b>Claude Code</b>: the desktop app or the terminal, not the
-            browser chat. The prompt checks for the <b>tribe-design-rituals</b>
-            skill and installs it itself the first time, a few extra seconds.
-            Without it, Claude improvises a deck that won't be on brand.</p>
-          <h3>Answer in whichever language</h3>
-          <p>French or English, and you can switch mid-conversation. Paste a French
-            mission brief as it is. The deck always comes out in English.</p>
-          <h3>Where the deck lands</h3>
-          <p>Right in the folder where you're chatting: the prep notes first,
-            then the .pptx, both already named after the ritual and the topic.
-            Nothing to download.</p>
-          <span class="tg-tdr__drive">Thiga Drive / Tribe Design / Rituals / [year]</span>
-          <h3>What stays with you</h3>
-          <p>Dropping your visuals into the dashed zones, filling the brackets
-            Claude left standing, blurring screenshots, and a read-through.
-            Your name is on it.</p>
-        </aside>
-      </div>
+      <span class="tg-tdr__eyebrow">Contribute</span>
+      <h2 class="tg-tdr__display tg-tdr__h2">Got a topic for the tribe?</h2>
+      <p class="tg-tdr__section-lede">A mission, a tool, a strong opinion, a
+        passion outside work: drop it in the form and the animation team
+        picks it up from there and finds you a slot.</p>
+      <a class="tg-tdr__btn tg-tdr__btn--primary" href="https://thiga.notion.site/2871bd4073b480bcabfdc4f3794b50b0?pvs=105"
+         target="_blank" rel="noopener"
+         style="text-decoration:none;display:inline-flex;align-items:center;margin-top:var(--s-md)">
+        Propose a topic &#8599;
+      </a>
     </div>
   </section>
+
+  <div class="tg-tdr__team-photo" aria-hidden="true">
+    <!-- TODO: photo de toute l'équipe, en attente du fichier -->
+  </div>
 
   <footer class="tg-tdr__footer">
     <div class="tg-tdr__wrap tg-tdr__footer-inner">
@@ -940,9 +936,6 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
   });
 
   /* ---------------- copie des prompts */
-  var pre = document.getElementById('tg-tdr-generic');
-  if (pre) pre.textContent = PROMPTS.generic;
-
   function fallbackCopy(text) {
     var ta = document.createElement('textarea');
     ta.value = text;
@@ -955,6 +948,16 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
     document.body.removeChild(ta);
   }
 
+  function copyPrompt(text, onDone) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onDone, function () {
+        fallbackCopy(text); onDone();
+      });
+    } else {
+      fallbackCopy(text); onDone();
+    }
+  }
+
   root.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-copy]');
     if (!btn) return;
@@ -963,23 +966,60 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
     var label = btn.querySelector('.tg-tdr__copy-label') || btn;
     var original = label.textContent;
 
-    function done() {
+    copyPrompt(text, function () {
       label.textContent = 'Copied, paste it into Claude';
       btn.classList.add('is-done');
       window.setTimeout(function () {
         label.textContent = original;
         btn.classList.remove('is-done');
       }, 2400);
+    });
+  });
+
+  /* Le sélecteur de rituel du hero : un bouton qui ouvre un menu, chaque
+     option copie directement le prompt du rituel choisi. */
+  (function () {
+    var pickerBtn = document.getElementById('tg-tdr-picker-btn');
+    var pickerMenu = document.getElementById('tg-tdr-picker-menu');
+    var pickerLabel = document.getElementById('tg-tdr-picker-label');
+    if (!pickerBtn || !pickerMenu || !pickerLabel) return;
+    var originalLabel = pickerLabel.textContent;
+
+    function closeMenu() {
+      pickerMenu.hidden = true;
+      pickerBtn.setAttribute('aria-expanded', 'false');
+    }
+    function openMenu() {
+      pickerMenu.hidden = false;
+      pickerBtn.setAttribute('aria-expanded', 'true');
     }
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, function () {
-        fallbackCopy(text); done();
+    pickerBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (pickerMenu.hidden) openMenu(); else closeMenu();
+    });
+
+    pickerMenu.addEventListener('click', function (e) {
+      var item = e.target.closest('[data-ritual]');
+      if (!item) return;
+      e.stopPropagation();
+      var text = PROMPTS[item.getAttribute('data-ritual')];
+      closeMenu();
+      pickerBtn.focus();
+      if (!text) return;
+      copyPrompt(text, function () {
+        pickerLabel.textContent = 'Copied, paste it into Claude';
+        window.setTimeout(function () { pickerLabel.textContent = originalLabel; }, 2400);
       });
-    } else {
-      fallbackCopy(text); done();
-    }
-  });
+    });
+
+    document.addEventListener('click', function () {
+      if (!pickerMenu.hidden) closeMenu();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !pickerMenu.hidden) { closeMenu(); pickerBtn.focus(); }
+    });
+  })();
 })();
 </script>
 <script>window.__TG_PROMPTS = {"trex": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my T'REX 🦖 for the Tribe Design ritual! Can you help me prepare my presentation?", "tlab": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my T'LAB 🔬 for the Tribe Design ritual! Can you help me prepare my presentation?", "banger": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my That's a Banger 🥇 for the Tribe Design ritual! Can you help me prepare my presentation?", "passion": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my Passion Fruit 🍍 for the Tribe Design ritual! Can you help me prepare my presentation?", "b2b": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my Back 2 Back 🕺💃 for the Tribe Design ritual! Can you help me prepare my presentation?", "cmm": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my Change My Mind 💬 for the Tribe Design ritual! Can you help me prepare my presentation?", "ama": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my Ask Me Anything 🎤 for the Tribe Design ritual! Can you help me prepare my presentation?", "workshop": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI'm preparing my Let's Work(shop) 🧰 for the Tribe Design ritual! Can you help me prepare my presentation?", "generic": "First, make sure you have the tribe-design-rituals skill: check whether ~/.claude/skills/tribe-design-rituals/SKILL.md exists. If not, clone https://github.com/CamsMel/Design-Rituals and copy its skill/ folder there. Skills installed mid-conversation are not always picked up by the Skill tool until a new session starts, so do not wait on that: once the file is there, read SKILL.md directly and follow it (it will tell you which other files to read) for everything below.\n\nI signed up for a Tribe Design slot and I need to prepare my ritual. Can you help me?"};</script>

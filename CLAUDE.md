@@ -62,6 +62,30 @@ Concrètement :
   matériau et une question d'interview dès que le prompt de départ est trop
   minimal, ce qui oblige le consultant à répondre à des choses avant même
   d'avoir vu les questions qui en dépendent.
+- **Hébergement bascule sur GitHub Pages le 2026-08-21** (`camsmel.github.io/Design-Rituals`), via `.github/workflows/pages.yml` qui republie `app/static/index.html` à chaque push sur `main`. Railway reste en place mais n'est plus nécessaire pour ce parcours ; les deux peuvent tourner en parallèle sans conflit.
+- **Le hero et la section finale ont été refaits le 2026-08-21.** Le CTA
+  "Copy the starter prompt" est devenu un sélecteur (`#tg-tdr-picker-btn` +
+  menu `#tg-tdr-picker-menu`) : un clic ouvre la liste des 8 rituels, choisir
+  l'un d'eux copie directement son prompt (même mécanisme que les boutons
+  natifs `[data-copy]`, mais via `data-ritual` pour ne pas entrer en conflit
+  avec le handler délégué existant). Le CTA secondaire est renommé "Explore
+  all rituals". La section "The starter prompt" (l'ancien prompt générique +
+  l'aside de conseils) a été remplacée par une carte "Contribute" qui pointe
+  vers le formulaire Notion publié en `.notion.site`. **Notion bloque
+  l'iframe pour tout domaine externe** (vérifié via les en-têtes HTTP :
+  `X-Frame-Options: SAMEORIGIN` + `frame-ancestors` limité aux domaines
+  Notion) — pas une histoire de droits de partage, un lien qui ouvre un
+  nouvel onglet est la seule option. Les conseils pratiques de l'ancienne
+  aside (langue, où atterrit le fichier, ce qui reste à la main du
+  consultant) ont été supprimés avec la section ; une partie recoupait déjà
+  "How it works", le reste (le dossier Drive, "what stays with you") n'est
+  nulle part ailleurs sur la page pour l'instant.
+- **Des photos de l'équipe animation restent à intégrer** : dans le hero (à
+  droite) et en clôture de page, juste avant le footer (`<div
+  class="tg-tdr__team-photo">`, actuellement un conteneur vide avec un
+  commentaire TODO). En attente des fichiers image ; la convention du fichier
+  est d'inliner les images en base64 (voir le logo Thiga), pas de fichiers
+  séparés à héberger.
 - **La copy de la page (`index.html`) a été remise à jour le 2026-08-21**
   pour refléter le parcours à 7 étapes de la skill : "How it works" est
   passé à 4 étapes (installation automatique, interview + recherche
