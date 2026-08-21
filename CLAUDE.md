@@ -42,6 +42,26 @@ Concrètement :
   Aucune des deux n'a de fichier source (la V1 d'origine est introuvable, voir
   plus bas) : toute future modification de ces prompts se fait à la main, aux
   deux endroits.
+- **Le rituel est toujours nommé dans le prompt copié** (un bouton par
+  rituel) : ça évite la question "quel rituel ?" pour le cas courant. Le
+  bouton "Copy the starter prompt" (générique, pour qui ne sait pas encore)
+  existe toujours en secours — voir plus bas pour son comportement.
+- **Vérifié à froid (HOME vierge, aucune skill installée) : Claude Code
+  charge son registre de skills au démarrage de la session.** Un `git clone`
+  fait en plein milieu de la conversation n'est donc pas détecté par l'outil
+  `Skill` avant une nouvelle session — testé, ça arrive vraiment, pas une
+  hypothèse. Le prompt dit donc explicitement de ne pas attendre l'outil
+  `Skill` après l'installation, et de lire `SKILL.md` à la main à la place
+  (qui indique lui-même quels autres fichiers lire). Sans cette consigne
+  explicite, Claude s'en sort quand même en général (testé, il a lu le
+  fichier de son propre chef) mais rien ne le garantit à chaque fois — ne pas
+  retirer cette phrase du prompt en pensant qu'elle est redondante.
+- **La question "quel rituel ?" doit rester seule**, sans rien d'autre dans
+  le même message (voir `skill/SKILL.md`, section 1) — testé : sans cette
+  précision explicite, Claude a tendance à la fondre avec la date, le
+  matériau et une question d'interview dès que le prompt de départ est trop
+  minimal, ce qui oblige le consultant à répondre à des choses avant même
+  d'avoir vu les questions qui en dépendent.
 
 ## Les invariants, à ne pas casser
 
