@@ -110,6 +110,14 @@ Concrètement :
   façon intempestive dans l'outil de test navigateur (et potentiellement
   dans de vrais navigateurs sur un simple redimensionnement mineur) — la
   fermeture au clic extérieur et à Échap suffit.
+- **Lien `claude://code/new` ajouté sous les CTA du hero** (`.tg-tdr__open-claude`),
+  vérifié via la doc officielle Anthropic (Claude Desktop répond au schéma
+  `claude://` sur macOS/Windows/Linux). `claude://code/new?q=<texte encodé>`
+  préremplirait même le composer avec le prompt — pas branché pour l'instant,
+  seul le lien nu vers une nouvelle session est posé. L'icône est un sunburst
+  générique dessiné à la main (8 ellipses tournées), pas le logo Claude
+  officiel : pas de source fiable à inliner trouvée, et recréer le tracé
+  exact à la main aurait été approximatif.
 - **La copy de la page (`index.html`) a été remise à jour le 2026-08-21**
   pour refléter le parcours à 7 étapes de la skill : "How it works" est
   passé à 4 étapes (installation automatique, interview + recherche

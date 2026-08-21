@@ -103,6 +103,14 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
 }
 .tg-tdr__lede strong { color: var(--tg-white); font-weight: 600; }
 .tg-tdr__ctas { display: flex; flex-wrap: wrap; gap: var(--s-sm); margin-top: var(--s-xl); }
+.tg-tdr__open-claude {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: var(--s-md);
+  color: var(--tg-violet-light); font-size: 14px; text-decoration: none;
+}
+.tg-tdr__open-claude:hover { color: var(--tg-white); }
+.tg-tdr__open-claude:focus-visible {
+  outline: 3px solid var(--tg-violet-light); outline-offset: 3px;
+}
 
 /* ---------------------------------------------------------------- buttons */
 .tg-tdr__btn {
@@ -544,6 +552,21 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
           <a class="tg-tdr__btn tg-tdr__btn--ghost" href="#tg-tdr-rituals"
              style="text-decoration:none;display:inline-flex;align-items:center">Explore all rituals</a>
         </div>
+        <a class="tg-tdr__open-claude" href="claude://code/new">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <g fill="currentColor">
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2"></ellipse>
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2" transform="rotate(45 12 12)"></ellipse>
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2" transform="rotate(90 12 12)"></ellipse>
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2" transform="rotate(135 12 12)"></ellipse>
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2" transform="rotate(180 12 12)"></ellipse>
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2" transform="rotate(225 12 12)"></ellipse>
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2" transform="rotate(270 12 12)"></ellipse>
+              <ellipse cx="12" cy="4.6" rx="1.7" ry="4.2" transform="rotate(315 12 12)"></ellipse>
+            </g>
+          </svg>
+          Already have your prompt? Open Claude Code directly
+        </a>
       </div>
     </div>
   </header>
