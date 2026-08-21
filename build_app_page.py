@@ -490,52 +490,10 @@ CHAT_JS = """
     attachFiles(e.dataTransfer.files);
   });
 
-  /* Les boutons de la V1 pilotent le drawer en V2 plutôt que de copier un
-     prompt dans le presse-papiers. */
-  document.querySelectorAll('[data-copy]').forEach(function (btn) {
-    var label = btn.querySelector('.tg-tdr__copy-label') || btn;
-    var isHero = !!btn.closest('header');
-    if (/^Copy the /.test(label.textContent)) {
-      label.textContent = label.textContent.replace(/^Copy the /, 'Prepare my ').replace(/ prompt$/, '');
-    } else if (/starter prompt|this prompt/.test(label.textContent)) {
-      label.textContent = 'Start in the chat';
-    }
-
-    if (isHero) {
-      // "Prepare my starter" : pas de chat direct, on va choisir un rituel.
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        var rituals = document.getElementById('tg-tdr-rituals');
-        if (rituals) rituals.scrollIntoView({ block: 'start' });
-      }, true);
-      return;
-    }
-
-    var key = btn.getAttribute('data-copy');
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      if (key !== 'generic') {
-        // Un rituel précis : Claude pose ses questions directement, pas de
-        // prompt à trous à compléter avant d'envoyer.
-        var ritualLabel = label.textContent.replace(/^Prepare my /, '');
-        openDrawer(ritualLabel);
-        input.value = ''; input.style.height = '';
-        if (!form.hidden) {
-          ask("I'm preparing my " + ritualLabel + " for the Tribe Design " +
-              "ritual. I haven't given you anything yet, so ask your " +
-              "questions straight away, no plan or preamble first.");
-        }
-        return;
-      }
-      var prompt = (window.__TG_PROMPTS || {})[key];
-      if (!prompt) return;
-      openDrawer('Talk to Claude');
-      input.value = prompt;
-      input.dispatchEvent(new Event('input'));
-    }, true);
-  });
+  // Chantier V2 mis de côté pour l'instant : on ne détourne plus les boutons
+  // [data-copy] vers le drawer, le copier-coller natif de la V1 reprend la
+  // main (voir root.addEventListener('click', ...) plus haut, hérité de V1).
+  // Le drawer reste câblé et fonctionnel si on veut le rebrancher plus tard.
 
   var gateReload = document.getElementById('tg-chat-gate-reload');
   if (gateReload) gateReload.addEventListener('click', function () { location.reload(); });

@@ -8,6 +8,41 @@ Une app web interne à Thiga. Les consultants de la Tribe Design y discutent ave
 Claude pour préparer leur rituel hebdomadaire, et récupèrent un `.pptx` à la
 charte. Le déroulé complet du déploiement est dans `README.md`, étape par étape.
 
+## V1 relancée, V2 mise de côté — décision du 2026-08-20
+
+Après les galères Railway (projet supprimé sans prévenir, faute d'abonnement
+Thiga) et le blocage Cloud Run (droits GCP manquants), l'utilisateur a choisi
+de repartir sur la **V1** pour un premier lancement : une page statique, sans
+backend, où chaque consultant copie le prompt de son rituel et le colle dans
+son propre Claude (Claude Code en pratique, pour que la skill soit utilisable).
+Zéro hébergement à maintenir, zéro clé partagée, zéro auth.
+
+Concrètement :
+- Le clic sur "Copy the X prompt" copie de nouveau dans le presse-papiers
+  (comportement natif de la V1, jamais supprimé — juste intercepté par le JS
+  du chat V2, qui a été débranché). Le chat en drawer et tout le backend
+  (`app/`, Railway) restent en place et fonctionnels, juste plus branchés sur
+  ces boutons. Pour les rebrancher : revoir le bloc `[data-copy]` dans
+  `build_app_page.py`/`index.html` (git blame sur ce commit pour l'ancienne
+  version).
+- Chaque prompt commence maintenant par une consigne d'auto-installation de
+  la skill : cloner `https://github.com/CamsMel/Design-Rituals` (repo rendu
+  **public** exprès pour ça, décision explicite de l'utilisateur — "tout doit
+  être accessible à la tribe design") et copier `skill/` vers
+  `~/.claude/skills/tribe-design-rituals/`. Ça ne marche que dans un Claude
+  avec Bash + accès fichiers (Claude Code), pas dans claude.ai en ligne.
+- **Piège découvert en éditant ce prompt : il y a deux copies des prompts
+  dans `index.html`.** `var PROMPTS` (dans le script natif de la V1, ~ligne
+  860) est celle que le clic natif lit réellement. `window.__TG_PROMPTS`
+  (injectée par `PROMPT_BRIDGE` dans `build_app_page.py`) n'est qu'un pont
+  pour l'ancien override du chat V2, plus lu par personne maintenant que
+  l'override est débranché. Éditer la mauvaise copie ne fait rien (piégeant :
+  aucune erreur, juste le mauvais texte copié). Les deux ont été mises à jour
+  par cohérence, mais seule `PROMPTS` compte tant que le chat reste débranché.
+  Aucune des deux n'a de fichier source (la V1 d'origine est introuvable, voir
+  plus bas) : toute future modification de ces prompts se fait à la main, aux
+  deux endroits.
+
 ## Les invariants, à ne pas casser
 
 **La skill fait le métier, pas le backend.** `skill/` contient la vraie skill

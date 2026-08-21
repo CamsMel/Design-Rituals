@@ -1,14 +1,25 @@
-# Tribe Design Prep Kit — V2, le pas à pas
+# Tribe Design Prep Kit
 
-La V1 envoyait les consultants copier un prompt dans Claude. La V2 met le chat
-sur la page : ils décrivent leur rituel, Claude les interroge, et le `.pptx`
-arrive dans la fenêtre avec un bouton vers le Drive de la tribe.
+> **Décision du 2026-08-20 : on relance la V1 pour le premier lancement.**
+> Après un projet Railway supprimé sans prévenir (pas d'abonnement Thiga) et
+> Cloud Run bloqué (droits GCP manquants), la V2 décrite ci-dessous (chat sur
+> la page, backend, hébergement) est mise de côté — pas supprimée, juste
+> débranchée. La V1 reprend la main : chaque consultant copie le prompt de
+> son rituel et le colle dans son propre Claude Code, qui installe la skill
+> lui-même si besoin (le repo est **public** exprès pour ça). Zéro backend à
+> maintenir. Détails dans `CLAUDE.md`, section "V1 relancée, V2 mise de côté".
+> Le reste de ce fichier documente la V2, utile si on la rebranche un jour.
+
+La V1 envoyait les consultants copier un prompt dans Claude. La V2 (mise de
+côté, voir ci-dessus) met le chat sur la page : ils décrivent leur rituel,
+Claude les interroge, et le `.pptx` arrive dans la fenêtre avec un bouton vers
+le Drive de la tribe.
 
 Les choix arbitrés avec toi : **hébergement Railway**, **dépôt Drive par compte
 de service** dans un dossier partagé. Le SSO Google restreint à @thiga.co était
 prévu, mais bloqué faute d'accès Google Cloud pour créer le client OAuth (voir
-l'étape 1) : l'app tourne pour l'instant avec un **mot de passe partagé**, à
-remonter en vrai SSO dès que l'accès arrive.
+l'étape 1) : l'app tournait avec un **mot de passe partagé**, retiré depuis
+(voir CLAUDE.md, section auth).
 
 Compte trois demi-journées si l'IT répond vite. L'étape longue n'est pas le code,
 c'est le compte de service Google.
