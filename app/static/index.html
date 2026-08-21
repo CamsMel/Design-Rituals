@@ -479,8 +479,10 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
         <p class="tg-tdr__lede">You're about to take part in a Tribe ritual and
           showcase your work to the team! Need a little help building your
           presentation? We've got you covered.
-          <strong>Claude knows all our rituals by heart</strong>: just copy-paste
-          the prompt you need and answer its questions.</p>
+          <strong>Claude knows all our rituals by heart</strong>: copy the
+          prompt for yours into Claude Code and it takes it from there.
+          Questions, research if you need it, a plan to review, then the
+          deck.</p>
         <div class="tg-tdr__ctas">
           <button type="button" class="tg-tdr__btn tg-tdr__btn--primary"
                   data-copy="generic">Copy the starter prompt</button>
@@ -536,25 +538,30 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
   <section class="tg-tdr__section tg-tdr__section--pale" id="tg-tdr-how">
     <div class="tg-tdr__wrap">
       <span class="tg-tdr__eyebrow">How it works</span>
-      <h2 class="tg-tdr__display tg-tdr__h2">Three steps and you're done</h2>
+      <h2 class="tg-tdr__display tg-tdr__h2">Four steps and you're done</h2>
       <p class="tg-tdr__section-lede">The one goal behind all of this: nobody should
         spend more than 45 minutes preparing a 30-minute ritual. If you finish the
         conversation feeling you still have a deck to build, it failed.</p>
       <ol class="tg-tdr__steps">
       <li class="tg-tdr__step" style="--tg-i: 0">
         <span class="tg-tdr__step-num">01</span>
-        <h3 class="tg-tdr__step-title">You paste the prompt into Claude</h3>
-        <p class="tg-tdr__step-body">Take the one for your ritual from the list below. If you already have notes, a mission brief or meeting minutes, paste them in too, in French or in English: Claude mines them for answers and only asks about what is genuinely missing.</p>
+        <h3 class="tg-tdr__step-title">Paste the prompt into Claude Code, it sets itself up</h3>
+        <p class="tg-tdr__step-body">Take the one for your ritual from the list below and drop it into Claude Code, the desktop app or the terminal, not the browser chat: this first step needs it to run a command. It checks whether it already has what it needs and installs it if not, a few extra seconds the first time only. Your ritual is already in the prompt, so it gets straight to work.</p>
       </li>
       <li class="tg-tdr__step" style="--tg-i: 1">
         <span class="tg-tdr__step-num">02</span>
-        <h3 class="tg-tdr__step-title">It asks five questions, in one block</h3>
-        <p class="tg-tdr__step-body">Never one per message, which is the main reason people give up halfway. Answer in shorthand, three words a line is plenty. Before touching the slides it tells you which angle it's keeping and what it's dropping, so you can object.</p>
+        <h3 class="tg-tdr__step-title">It asks what it needs, in one block</h3>
+        <p class="tg-tdr__step-body">Never one question per message, which is the main reason people give up halfway. Answer in shorthand, three words a line is plenty, or drag in notes, a brief, a screenshot. Missing a fact you'd rather not guess? Ask it to look it up: it'll say what it searched and where the answer came from.</p>
       </li>
       <li class="tg-tdr__step" style="--tg-i: 2">
         <span class="tg-tdr__step-num">03</span>
-        <h3 class="tg-tdr__step-title">You get the .pptx and import it into the Drive</h3>
-        <p class="tg-tdr__step-body">The real branded template, filled, with speaker notes that say what to cover out loud and the timing for each slide. What's left is a read-through, your visuals, and dropping the file in the tribe folder.</p>
+        <h3 class="tg-tdr__step-title">You read the plan before it becomes slides</h3>
+        <p class="tg-tdr__step-body">A text version of the whole deck, section by section, easier to correct than a layout. Say what's off, what needs more depth, or send more material, and it folds that in. Nothing gets locked into a slide until you've seen it written out plainly.</p>
+      </li>
+      <li class="tg-tdr__step" style="--tg-i: 3">
+        <span class="tg-tdr__step-num">04</span>
+        <h3 class="tg-tdr__step-title">You get the branded deck, right where you're chatting</h3>
+        <p class="tg-tdr__step-body">The real template, filled, with speaker notes that say what to cover out loud and the timing for each slide. It lands in your working folder, no download button to hunt for. Want it in Google Slides instead of PowerPoint? File → Import slides does that in one click, on your side.</p>
       </li>
       </ol>
     </div>
@@ -809,6 +816,10 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
         <h3 class="tg-tdr__guard-title">The slide ceiling is a ceiling</h3>
         <p>Seven slides for a T'REX means seven, not eight. More slides is not more generous, it's a longer meeting. The READ ME slide and the TIP boxes are stripped from the deliverable.</p>
       </li>
+      <li class="tg-tdr__guard" style="--tg-i: 4">
+        <h3 class="tg-tdr__guard-title">A searched fact always carries its source</h3>
+        <p>Claude only looks things up when it helps and never for rituals about your own experience. Anything it finds online is labelled as such in the prep notes, right next to what you told it yourself, and the two never get blurred into one.</p>
+      </li>
       </ul>
     </div>
   </section>
@@ -827,15 +838,17 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
         </div>
         <aside class="tg-tdr__aside">
           <h3>Before your first run</h3>
-          <p>The <b>tribe-design-rituals</b> skill has to be installed on your Claude
-            account. Camille sends you the file, one click on "Save" is enough.
+          <p>Use <b>Claude Code</b>: the desktop app or the terminal, not the
+            browser chat. The prompt checks for the <b>tribe-design-rituals</b>
+            skill and installs it itself the first time, a few extra seconds.
             Without it, Claude improvises a deck that won't be on brand.</p>
           <h3>Answer in whichever language</h3>
           <p>French or English, and you can switch mid-conversation. Paste a French
             mission brief as it is. The deck always comes out in English.</p>
           <h3>Where the deck lands</h3>
-          <p>Download the .pptx and drop it in the tribe folder, named after the
-            ritual and the date.</p>
+          <p>Right in the folder where you're chatting: the prep notes first,
+            then the .pptx, both already named after the ritual and the topic.
+            Nothing to download.</p>
           <span class="tg-tdr__drive">Thiga Drive / Tribe Design / Rituals / [year]</span>
           <h3>What stays with you</h3>
           <p>Dropping your visuals into the dashed zones, filling the brackets

@@ -62,6 +62,15 @@ Concrètement :
   matériau et une question d'interview dès que le prompt de départ est trop
   minimal, ce qui oblige le consultant à répondre à des choses avant même
   d'avoir vu les questions qui en dépendent.
+- **La copy de la page (`index.html`) a été remise à jour le 2026-08-21**
+  pour refléter le parcours à 7 étapes de la skill : "How it works" est
+  passé à 4 étapes (installation automatique, interview + recherche
+  optionnelle, notes de prep à valider, deck), un garde-fou sur les faits
+  sourcés a été ajouté, et l'aside "Getting started" qui décrivait encore
+  l'ancienne installation manuelle par Camille et un bouton de téléchargement
+  a été corrigée. Comme pour les prompts, cette copy vient de la V1
+  introuvable : aucun fichier source, tout se modifie à la main dans
+  `index.html`.
 
 ## Les invariants, à ne pas casser
 
