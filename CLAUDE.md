@@ -88,6 +88,17 @@ Concrètement :
   garder l'alpha (PNG/WebP, jamais JPEG) : les découpes ovales/arrondies sont
   de la vraie transparence, pas juste une bordure visuelle. Les fichiers
   sources originaux ne sont pas commités (déjà inlinés, inutile de dupliquer).
+  **Piège découvert avec une 3e photo ajoutée juste après** : malgré son
+  cercle blanc à l'écran, son canal alpha était uniforme à 255 (aucune vraie
+  transparence, juste un cercle dessiné sur fond blanc opaque). Vérifier
+  `im.split()[-1].getextrema()` avant d'inliner plutôt que de supposer : si
+  ça renvoie `(255, 255)`, il faut découper soi-même un masque circulaire
+  (Pillow `ImageDraw.ellipse` + `putalpha`) avant de redimensionner.
+  **Le premier placement des 3 photos se chevauchait** et masquait un
+  visage — repéré par l'utilisateur sur une capture, pas par moi en testant.
+  Les rectangles englobants (avant rotation) des trois photos ne doivent
+  jamais s'intersecter, ni en largeur ni en hauteur à la fois ; une marge de
+  30-40px entre chaque suffit à absorber la rotation CSS sans recalcul.
 - **La copy de la page (`index.html`) a été remise à jour le 2026-08-21**
   pour refléter le parcours à 7 étapes de la skill : "How it works" est
   passé à 4 étapes (installation automatique, interview + recherche
