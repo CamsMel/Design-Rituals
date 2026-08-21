@@ -99,6 +99,17 @@ Concrètement :
   Les rectangles englobants (avant rotation) des trois photos ne doivent
   jamais s'intersecter, ni en largeur ni en hauteur à la fois ; une marge de
   30-40px entre chaque suffit à absorber la rotation CSS sans recalcul.
+- **Le menu du sélecteur de rituel (`#tg-tdr-picker-menu`) est en
+  `position: fixed`, pas `absolute`.** `.tg-tdr__hero` a `overflow: hidden`
+  (pour contenir la forme brand en fond) : un menu en `position: absolute`
+  s'y fait rogner dès qu'il dépasse la hauteur du hero, avec pour symptôme
+  "le menu passe sous la section suivante" — signalé par l'utilisateur sur
+  une capture. `top`/`left` sont posés en JS à l'ouverture via
+  `getBoundingClientRect()` sur le bouton. Ne pas ajouter d'écouteur
+  `scroll`/`resize` qui referme le menu : testé, ça le referme aussi de
+  façon intempestive dans l'outil de test navigateur (et potentiellement
+  dans de vrais navigateurs sur un simple redimensionnement mineur) — la
+  fermeture au clic extérieur et à Échap suffit.
 - **La copy de la page (`index.html`) a été remise à jour le 2026-08-21**
   pour refléter le parcours à 7 étapes de la skill : "How it works" est
   passé à 4 étapes (installation automatique, interview + recherche

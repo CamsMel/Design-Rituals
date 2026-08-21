@@ -131,7 +131,10 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
 .tg-tdr__picker-caret { font-size: 11px; transition: transform 160ms ease-out; }
 #tg-tdr-picker-btn[aria-expanded="true"] .tg-tdr__picker-caret { transform: rotate(180deg); }
 .tg-tdr__picker-menu {
-  position: absolute; top: calc(100% + 8px); left: 0; z-index: 20;
+  /* position: fixed, pas absolute : le hero a overflow:hidden (pour la
+     forme brand en fond), qui rognerait un menu absolu dès qu'il dépasse
+     la hauteur du hero. top/left posés en JS à l'ouverture. */
+  position: fixed; z-index: 1000;
   min-width: 240px; margin: 0; padding: 6px; list-style: none;
   background: var(--tg-russian-violet); border: 1px solid rgba(230,222,250,.28);
   border-radius: var(--tg-r); box-shadow: 0 12px 32px rgba(0,0,0,.35);
@@ -1030,6 +1033,9 @@ html, body { margin: 0; padding: 0; background: #FFFFFF; }
       pickerBtn.setAttribute('aria-expanded', 'false');
     }
     function openMenu() {
+      var rect = pickerBtn.getBoundingClientRect();
+      pickerMenu.style.top = (rect.bottom + 8) + 'px';
+      pickerMenu.style.left = rect.left + 'px';
       pickerMenu.hidden = false;
       pickerBtn.setAttribute('aria-expanded', 'true');
     }

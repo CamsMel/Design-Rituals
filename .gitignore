@@ -20,3 +20,6 @@ chat.png
 
 # État interne Claude Code, pas du code projet
 .claude/
+
+# macOS
+.DS_Store
